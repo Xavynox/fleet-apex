@@ -1,0 +1,147 @@
+name: Build FLEET APEX Geode Mod
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build configuration'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
+      target:
+        description: 'Target platform'
+        required: true
+        default: 'android-arm64'
+        type: choice
+        options:
+          - android-arm64
+          - windows-x64
+          - linux-x64
+          - macos-x64
+          - macos-arm64
+
+jobs:
+  build-android-arm64:
+    name: Build Android arm64
+    runs-on: ubuntu-latest
+    if: github.event.inputs.target == 'android-arm64' || github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (Android arm64)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: FLEET_APEX/geode-mod
+          target: android-arm64
+          build_type: ${{ github.event.inputs.build_type || 'release' }}
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.geode_file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.2-android-arm64
+          path: ${{ steps.build_mod.outputs.geode_file }}
+          retention-days: 30
+
+  build-windows-x64:
+    name: Build Windows x64
+    runs-on: windows-latest
+    if: github.event.inputs.target == 'windows-x64'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (Windows x64)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: FLEET_APEX/geode-mod
+          target: windows-x64
+          build_type: ${{ github.event.inputs.build_type || 'release' }}
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.geode_file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.2-windows-x64
+          path: ${{ steps.build_mod.outputs.geode_file }}
+          retention-days: 30
+
+  build-linux-x64:
+    name: Build Linux x64
+    runs-on: ubuntu-latest
+    if: github.event.inputs.target == 'linux-x64'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (Linux x64)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: FLEET_APEX/geode-mod
+          target: linux-x64
+          build_type: ${{ github.event.inputs.build_type || 'release' }}
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.geode_file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.2-linux-x64
+          path: ${{ steps.build_mod.outputs.geode_file }}
+          retention-days: 30
+
+  build-macos-x64:
+    name: Build macOS x64
+    runs-on: macos-latest
+    if: github.event.inputs.target == 'macos-x64'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (macOS x64)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: FLEET_APEX/geode-mod
+          target: macos-x64
+          build_type: ${{ github.event.inputs.build_type || 'release' }}
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.geode_file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.2-macos-x64
+          path: ${{ steps.build_mod.outputs.geode_file }}
+          retention-days: 30
+
+  build-macos-arm64:
+    name: Build macOS arm64
+    runs-on: macos-latest
+    if: github.event.inputs.target == 'macos-arm64'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (macOS arm64)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: FLEET_APEX/geode-mod
+          target: macos-arm64
+          build_type: ${{ github.event.inputs.build_type || 'release' }}
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.geode_file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.2-macos-arm64
+          path: ${{ steps.build_mod.outputs.geode_file }}
+          retention-days: 30

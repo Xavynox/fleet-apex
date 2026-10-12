@@ -1,0 +1,39 @@
+{
+  "game": "geometry dash",
+  "version": "v0.2.0",
+  "id": "xavynox.fleet-apex",
+  "name": "FLEET APEX",
+  "developer": "xavynox",
+  "description": "FLEET APEX - The Most Advanced Geometry Dash Optimization Mod. A runtime CPU↔GPU cooperative performance engine for Geometry Dash.",
+  "resource_pack": "",
+  "geode_version": ">=1.9.0",
+  "dependencies": [
+    {
+      "id": "geometry dashes",
+      "version_range": ">=2.2081",
+      "optional": false
+    },
+    {
+      "id": "rosetta",
+      "version_range": ">=1.0.0",
+      "optional": true
+    }
+  ],
+  "platform": {
+    "android": {
+      "arm64": true,
+      "arm": false,
+      "x86_64": false
+    },
+    "windows": {
+      "x86_64": true
+    },
+    "linux": {
+      "x86_64": true
+    },
+    "macos": {
+      "x86_64": true,
+      "arm64": true
+    }
+  }
+}

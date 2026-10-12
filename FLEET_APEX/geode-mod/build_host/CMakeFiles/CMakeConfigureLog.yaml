@@ -1,0 +1,870 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+      - "/bin/"
+      - "/usr/bin/"
+      - "/usr/local/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake:218 (message)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      The system is: Android - 33 - aarch64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_MAKE_PROGRAM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gmake"
+      - "make"
+      - "smake"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    searched_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/gmake"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/gmake"
+      - "/system/bin/gmake"
+      - "/system/xbin/gmake"
+      - "/vendor/bin/gmake"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/make"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER"
+    description: "CXX compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "c++"
+      - "CC"
+      - "g++"
+      - "aCC"
+      - "cl"
+      - "bcc"
+      - "xlC"
+      - "icpx"
+      - "icx"
+      - "clang++"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/c++"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:501 (find_file)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:538 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/"
+    found: "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+      Compiler: /data/user/0/com.androidharness.app/files/linux/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      ld.lld: error: unable to find library -lc++_shared
+      ld.lld: error: unable to find library -l:libunwind.a
+      ld.lld: error: unable to find library -l:libunwind.a
+      c++: error: linker command failed with exit code 1 (use -v to see invocation)
+      
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:501 (find_file)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:538 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/"
+    found: "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /data/user/0/com.androidharness.app/files/linux/bin/c++ 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+      
+      The CXX compiler identification is Clang, found in:
+        /storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/4.4.4/CompilerIdCXX/CMakeCXXCompilerId.o
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-ar"
+      - "ar"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ar"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-ranlib"
+      - "ranlib"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-strip"
+      - "strip"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-strip"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ld.lld"
+      - "ld"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/ld.lld"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-nm"
+      - "nm"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-nm"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-objdump"
+      - "objdump"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-objdump"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-objcopy"
+      - "objcopy"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-objcopy"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-readelf"
+      - "readelf"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-readelf"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-dlltool"
+      - "dlltool"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-dlltool"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-addr2line"
+      - "addr2line"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    found: "/data/user/0/com.androidharness.app/files/linux/bin/llvm-addr2line"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "tapi"
+    candidate_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    searched_directories:
+      - "/data/user/0/com.androidharness.app/files/linux/bin/tapi"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/tapi"
+      - "/system/bin/tapi"
+      - "/system/xbin/tapi"
+      - "/vendor/bin/tapi"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/Compiler/Clang-FindBinUtils.cmake:26 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_AR"
+    description: "LLVM archiver"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-ar-21.1"
+      - "llvm-ar-21"
+      - "llvm-ar21"
+      - "llvm-ar"
+    candidate_directories:
+      - "/data/data/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    searched_directories:
+      - "/data/data/com.androidharness.app/files/linux/bin/llvm-ar-21.1"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ar-21.1"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/llvm-ar-21.1"
+      - "/system/bin/llvm-ar-21.1"
+      - "/system/xbin/llvm-ar-21.1"
+      - "/vendor/bin/llvm-ar-21.1"
+      - "/data/data/com.androidharness.app/files/linux/bin/llvm-ar-21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ar-21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/llvm-ar-21"
+      - "/system/bin/llvm-ar-21"
+      - "/system/xbin/llvm-ar-21"
+      - "/vendor/bin/llvm-ar-21"
+      - "/data/data/com.androidharness.app/files/linux/bin/llvm-ar21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ar21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/llvm-ar21"
+      - "/system/bin/llvm-ar21"
+      - "/system/xbin/llvm-ar21"
+      - "/vendor/bin/llvm-ar21"
+    found: "/data/data/com.androidharness.app/files/linux/bin/llvm-ar"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/Compiler/Clang-FindBinUtils.cmake:38 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_RANLIB"
+    description: "Generate index for LLVM archive"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "llvm-ranlib-21.1"
+      - "llvm-ranlib-21"
+      - "llvm-ranlib21"
+      - "llvm-ranlib"
+    candidate_directories:
+      - "/data/data/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    searched_directories:
+      - "/data/data/com.androidharness.app/files/linux/bin/llvm-ranlib-21.1"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ranlib-21.1"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/llvm-ranlib-21.1"
+      - "/system/bin/llvm-ranlib-21.1"
+      - "/system/xbin/llvm-ranlib-21.1"
+      - "/vendor/bin/llvm-ranlib-21.1"
+      - "/data/data/com.androidharness.app/files/linux/bin/llvm-ranlib-21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ranlib-21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/llvm-ranlib-21"
+      - "/system/bin/llvm-ranlib-21"
+      - "/system/xbin/llvm-ranlib-21"
+      - "/vendor/bin/llvm-ranlib-21"
+      - "/data/data/com.androidharness.app/files/linux/bin/llvm-ranlib21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/llvm-ranlib21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/llvm-ranlib21"
+      - "/system/bin/llvm-ranlib21"
+      - "/system/xbin/llvm-ranlib21"
+      - "/vendor/bin/llvm-ranlib21"
+    found: "/data/data/com.androidharness.app/files/linux/bin/llvm-ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/Compiler/Clang-FindBinUtils.cmake:50 (find_program)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:7 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS"
+    description: "`clang-scan-deps` dependency scanner"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "clang-scan-deps-21.1"
+      - "clang-scan-deps-21"
+      - "clang-scan-deps21"
+      - "clang-scan-deps"
+      - "clang-scan-deps-21.1"
+      - "clang-scan-deps-21"
+      - "clang-scan-deps21"
+      - "clang-scan-deps"
+    candidate_directories:
+      - "/data/data/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/"
+      - "/system/bin/"
+      - "/system/xbin/"
+      - "/vendor/bin/"
+    searched_directories:
+      - "/data/data/com.androidharness.app/files/linux/bin/clang-scan-deps-21.1"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/clang-scan-deps-21.1"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/clang-scan-deps-21.1"
+      - "/system/bin/clang-scan-deps-21.1"
+      - "/system/xbin/clang-scan-deps-21.1"
+      - "/vendor/bin/clang-scan-deps-21.1"
+      - "/data/data/com.androidharness.app/files/linux/bin/clang-scan-deps-21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/clang-scan-deps-21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/clang-scan-deps-21"
+      - "/system/bin/clang-scan-deps-21"
+      - "/system/xbin/clang-scan-deps-21"
+      - "/vendor/bin/clang-scan-deps-21"
+      - "/data/data/com.androidharness.app/files/linux/bin/clang-scan-deps21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/clang-scan-deps21"
+      - "/data/user/0/com.androidharness.app/files/linux/bin/applets/clang-scan-deps21"
+      - "/system/bin/clang-scan-deps21"
+      - "/system/xbin/clang-scan-deps21"
+      - "/vendor/bin/clang-scan-deps21"
+    found: "/data/data/com.androidharness.app/files/linux/bin/clang-scan-deps"
+    search_context:
+      ENV{PATH}:
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin"
+        - "/data/user/0/com.androidharness.app/files/linux/bin/applets"
+        - "/system/bin"
+        - "/system/xbin"
+        - "/vendor/bin"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeDetermineCompilerABI.cmake:123 (try_compile)"
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-put1K5"
+      binary: "/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-put1K5"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/data/data/com.androidharness.app/files/linux/bin/clang-scan-deps"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: false
+      stdout: |
+        Change Dir: '/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-put1K5'
+        
+        Run Build Command(s): /data/user/0/com.androidharness.app/files/linux/bin/cmake -E env VERBOSE=1 /data/user/0/com.androidharness.app/files/linux/bin/make -f Makefile cmTC_f8bb3/fast
+        /data/user/0/com.androidharness.app/files/linux/bin/make  -f CMakeFiles/cmTC_f8bb3.dir/build.make CMakeFiles/cmTC_f8bb3.dir/build
+        make[1]: Entering directory '/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-put1K5'
+        make[1]: /data/data/com.termux/files/usr/bin/sh: No such file or directory
+        make[1]: *** [CMakeFiles/cmTC_f8bb3.dir/build.make:81: CMakeFiles/cmTC_f8bb3.dir/CMakeCXXCompilerABI.cpp.o] Error 127
+        make[1]: Leaving directory '/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-put1K5'
+        make: *** [Makefile:134: cmTC_f8bb3/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/data/user/0/com.androidharness.app/files/linux/share/cmake-4.4/Modules/CMakeTestCXXCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Check for working CXX compiler: /data/user/0/com.androidharness.app/files/linux/bin/c++"
+    directories:
+      source: "/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-rNZkMN"
+      binary: "/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-rNZkMN"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/data/data/com.androidharness.app/files/linux/bin/clang-scan-deps"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_WORKS"
+      cached: false
+      stdout: |
+        Change Dir: '/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-rNZkMN'
+        
+        Run Build Command(s): /data/user/0/com.androidharness.app/files/linux/bin/cmake -E env VERBOSE=1 /data/user/0/com.androidharness.app/files/linux/bin/make -f Makefile cmTC_ca476/fast
+        /data/user/0/com.androidharness.app/files/linux/bin/make  -f CMakeFiles/cmTC_ca476.dir/build.make CMakeFiles/cmTC_ca476.dir/build
+        make[1]: Entering directory '/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-rNZkMN'
+        make[1]: /data/data/com.termux/files/usr/bin/sh: No such file or directory
+        make[1]: *** [CMakeFiles/cmTC_ca476.dir/build.make:81: CMakeFiles/cmTC_ca476.dir/testCXXCompiler.cxx.o] Error 127
+        make[1]: Leaving directory '/storage/emulated/0/Android/data/com.androidharness.app/files/workspace/FLEET_APEX/geode-mod/build_host/CMakeFiles/CMakeScratch/TryCompile-rNZkMN'
+        make: *** [Makefile:134: cmTC_ca476/fast] Error 2
+        
+      exitCode: 2
+...
