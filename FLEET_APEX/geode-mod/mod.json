@@ -9,7 +9,7 @@
   "geode_version": ">=1.9.0",
   "dependencies": [
     {
-      "id": "geometry dashes",
+      "id": "geometry dash",
       "version_range": ">=2.2081",
       "optional": false
     },
