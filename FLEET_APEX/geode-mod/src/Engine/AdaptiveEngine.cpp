@@ -1,11 +1,11 @@
 #include "AdaptiveEngine.h"
-#include <algorithm>
-#include <numeric>
 #include "Profiler.h"
 #include "LevelAnalyzer.h"
 #include "BottleneckClassifier.h"
 #include "CPULiberationEngine.h"
 #include "GPUAssistEngine.h"
+#include <algorithm>
+#include <numeric>
 
 namespace fleetapex {
 
@@ -36,10 +36,8 @@ void AdaptiveEngine::initialize() {
 }
 
 void AdaptiveEngine::update() {
-    if (!m_profiler || !m_analyzer) return;
-
     // Update the profiler with the latest frame
-    m_profiler->classifyBottleneck();
+    m_profiler.classifyBottleneck();
 
     // Update runtime state from profiler
     auto snapshot = m_profiler.getSnapshot();
@@ -72,10 +70,6 @@ void AdaptiveEngine::update() {
     m_hasEnoughData = snapshot.frameHistory.size() >= 30;
 }
 
-const AdaptiveEngine::RuntimeState& AdaptiveEngine::getRuntimeState() const {
-    return m_runtimeState;
-}
-
 void AdaptiveEngine::setPerformanceMode(PerformanceMode mode) {
     m_mode = mode;
 }
@@ -85,18 +79,10 @@ void AdaptiveEngine::setTargetFrameRate(double fps) {
     m_bottleneckClassifier->setTargetFrameTime(fps);
 }
 
-const std::vector<AdaptiveEngine::OptimizationDecision>& AdaptiveEngine::getPendingDecisions() const {
-    return m_pendingDecisions;
-}
-
-void AdaptiveEngine::clearPendingDecisions() {
-    m_pendingDecisions.clear();
-}
-
 AdaptiveEngine::Report AdaptiveEngine::getReport() const {
     Report report;
     report.bottleneck = m_profiler.getBottleneckDescription();
-    report.primaryCostSource = "unknown"; // In a full implementation, we would get this from the level analyzer or bottleneck classifier
+    report.primaryCostSource = "unknown";
     report.recommendedAction = "Monitor and maintain";
     report.confidence = m_hasEnoughData ? 0.8 : 0.3;
     report.shouldOptimize = false; // Diagnostic mode: no optimizations applied

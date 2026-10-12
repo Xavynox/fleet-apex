@@ -11,6 +11,8 @@ LevelAnalyzer::LevelAnalyzer() {
 
 LevelAnalyzer::~LevelAnalyzer() = default;
 
+// Definitions moved to header as inline - no separate definitions needed here
+
 LevelAnalyzer::ObjectType LevelAnalyzer::classifyObjectType(int32_t objectTypeValue) {
     switch (objectTypeValue) {
         case 0: return ObjectType::PLAYER;
@@ -73,13 +75,6 @@ double LevelAnalyzer::estimateObjectCost(const ObjectInfo& obj) {
     
     return baseCost;
 }
-
-LevelAnalyzer::LevelAnalyzer() {
-    m_profile = std::make_unique<LevelProfileImpl>();
-    m_objects.reserve(50000);
-}
-
-LevelAnalyzer::~LevelAnalyzer() = default;
 
 void LevelAnalyzer::beginLevelScan(const std::string& levelName, int32_t levelId) {
     m_profile = std::make_unique<LevelProfileImpl>();

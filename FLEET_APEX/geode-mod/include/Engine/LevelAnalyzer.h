@@ -79,10 +79,9 @@ private:
         bool hasSpawners = false;
         bool hasParticleSystems = false;
         bool realtimeGlow = false;
-        std::string primaryBottleneck;
-        std::vector<std::string> optimizationCandidates;
-        std::vector<int32_t> staticObjectIds;
-        std::vector<int32_t> cullableObjectIds;
+        std::vector<RegionInfo> highCostRegions;
+        std::vector<RegionInfo> particleHeavyRegions;
+        std::vector<RegionInfo> glowHeavyRegions;
     };
 
 private:
@@ -90,11 +89,6 @@ private:
     std::vector<ObjectInfo> m_objects;
     bool m_analyzed = false;
     std::string m_levelInternalName;
-
-    static ObjectType classifyObjectType(int32_t objectTypeValue);
-    static EffectCategory analyzeEffects(const ObjectInfo& obj);
-    static bool isObjectStatic(const ObjectInfo& obj);
-    static double estimateObjectCost(const ObjectInfo& obj);
 
 public:
     LevelAnalyzer();
