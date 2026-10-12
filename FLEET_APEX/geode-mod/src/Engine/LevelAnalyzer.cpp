@@ -4,30 +4,6 @@
 
 namespace fleetapex {
 
-struct LevelAnalyzer::LevelProfileImpl {
-    std::string levelName;
-    int32_t levelId = 0;
-    uint64_t totalObjectCount = 0;
-    uint64_t staticObjectCount = 0;
-    uint64_t dynamicObjectCount = 0;
-    std::map<ObjectType, uint64_t> objectDistribution;
-    std::map<EffectCategory, uint64_t> effectDistribution;
-    std::vector<RegionInfo> regions;
-    double overallDensity = 0.0;
-    double estimatedTotalCost = 0.0;
-    bool hasComplexTriggers = false;
-    bool hasSpawners = false;
-    bool hasParticleSystems = false;
-    bool realtimeGlow = false;
-    std::string primaryBottleneck;
-    std::vector<std::string> optimizationCandidates;
-    std::vector<int32_t> staticObjectIds;
-    std::vector<int32_t> cullableObjectIds;
-    std::vector<RegionInfo> highCostRegions;
-    std::vector<RegionInfo> particleHeavyRegions;
-    std::vector<RegionInfo> glowHeavyRegions;
-};
-
 LevelAnalyzer::LevelAnalyzer() {
     m_profile = std::make_unique<LevelProfileImpl>();
     m_objects.reserve(50000);
@@ -64,6 +40,12 @@ LevelAnalyzer::EffectCategory LevelAnalyzer::analyzeEffects(const ObjectInfo& ob
         case ObjectType::TRIGGER:
             return EffectCategory::CONTROLLER;
         case ObjectType::OTHER:
+            if (obj.metaData.find("glow") != std::string::npos) {
+                return EffectCategory::GLOW;
+            }
+            if (obj.metaData.find("particle") != std::string::npos) {
+                return EffectCategory::PARTICLES;
+            }
             return EffectCategory::NONE;
         default:
             return EffectCategory::NONE;
@@ -91,6 +73,13 @@ double LevelAnalyzer::estimateObjectCost(const ObjectInfo& obj) {
     
     return baseCost;
 }
+
+LevelAnalyzer::LevelAnalyzer() {
+    m_profile = std::make_unique<LevelProfileImpl>();
+    m_objects.reserve(50000);
+}
+
+LevelAnalyzer::~LevelAnalyzer() = default;
 
 void LevelAnalyzer::beginLevelScan(const std::string& levelName, int32_t levelId) {
     m_profile = std::make_unique<LevelProfileImpl>();
@@ -157,51 +146,10 @@ void LevelAnalyzer::markAsGameplayCritical(int32_t objectId, bool critical) {
 void LevelAnalyzer::endLevelScan() {
     m_profile->dynamicObjectCount = m_profile->totalObjectCount - m_profile->staticObjectCount;
     
-    const int REGION_SIZE = 500;
-    std::map<std::pair<int, int>, RegionInfo> regionMap;
-    
-    for (const auto& obj : m_objects) {
-        int regionX = (obj.x / REGION_SIZE) * REGION_SIZE;
-        int regionY = (obj.y / REGION_SIZE) * REGION_SIZE;
-        auto key = std::make_pair(regionX, regionY);
-        
-        if (regionMap.find(key) == regionMap.end()) {
-            RegionInfo region;
-            region.x = regionX;
-            region.y = regionY;
-            region.width = REGION_SIZE;
-            region.height = REGION_SIZE;
-            regionMap[key] = region;
-        }
-        
-        auto& region = regionMap[key];
-        region.objectCount++;
-        region.dominantEffect = obj.effectCat;
-        if (obj.effectCat == EffectCategory::PARTICLES) region.particleHeavy = true;
-        if (obj.effectCat == EffectCategory::GLOW) region.glowHeavy = true;
-        region.avgCost += estimateObjectCost(obj);
-    }
-    
-    for (auto& pair : regionMap) {
-        auto& region = pair.second;
-        if (region.objectCount > 0) {
-            region.avgCost /= region.objectCount;
-        }
-        m_profile->regions.push_back(region);
-    }
-    
     m_profile->optimizationCandidates.clear();
     m_profile->highCostRegions.clear();
     m_profile->particleHeavyRegions.clear();
     m_profile->glowHeavyRegions.clear();
-    
-    for (const auto& region : m_profile->regions) {
-        if (region.objectCount > 10 || region.avgCost > 15) {
-            m_profile->highCostRegions.push_back(region);
-        }
-        if (region.particleHeavy) m_profile->particleHeavyRegions.push_back(region);
-        if (region.glowHeavy) m_profile->glowHeavyRegions.push_back(region);
-    }
     
     if (m_profile->effectDistribution[EffectCategory::GLOW] > 10) {
         m_profile->realtimeGlow = true;
@@ -256,6 +204,10 @@ void LevelAnalyzer::invalidateStaticCache(int32_t objectId) {
             return;
         }
     }
+}
+
+const std::vector<LevelAnalyzer::ObjectInfo>& LevelAnalyzer::getObjects() const {
+    return m_objects;
 }
 
 std::vector<LevelAnalyzer::ObjectInfo> LevelAnalyzer::findStaticObjects() const {

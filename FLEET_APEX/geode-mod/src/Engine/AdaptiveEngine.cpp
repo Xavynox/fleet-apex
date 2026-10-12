@@ -1,6 +1,11 @@
 #include "AdaptiveEngine.h"
 #include <algorithm>
 #include <numeric>
+#include "Profiler.h"
+#include "LevelAnalyzer.h"
+#include "BottleneckClassifier.h"
+#include "CPULiberationEngine.h"
+#include "GPUAssistEngine.h"
 
 namespace fleetapex {
 
@@ -25,8 +30,9 @@ void AdaptiveEngine::initialize() {
     m_pendingDecisions.clear();
     m_decisionHistory.clear();
     m_bottleneckClassifier->setTargetFrameTime(60.0);
-    m_cpuLiberation->enable();
-    m_gpuAssist->enable();
+    // Diagnostic-only: keep optimization engines disabled by default
+    // m_cpuLiberation->enable();
+    // m_gpuAssist->enable();
 }
 
 void AdaptiveEngine::update() {

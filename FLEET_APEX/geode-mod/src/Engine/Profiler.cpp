@@ -61,54 +61,6 @@ void Profiler::estimateGpuTime(double ms) {
     m_snapshot.current.gpuTimeMs = ms;
 }
 
-const Profiler::PerformanceSnapshot& Profiler::getSnapshot() const {
-    return m_snapshot;
-}
-
-Profiler::PerformanceSnapshot& Profiler::getSnapshot() {
-    return m_snapshot;
-}
-
-bool Profiler::isProfilingEnabled() const {
-    return m_profilingEnabled;
-}
-
-void Profiler::setProfilingEnabled(bool enabled) {
-    m_profilingEnabled = enabled;
-}
-
-void Profiler::setHistorySize(size_t size) {
-    m_historySize = size;
-    m_frameHistory = std::vector<double>(m_frameHistory.begin(), 
-                                         m_frameHistory.begin() + std::min(m_frameHistory.size(), size));
-}
-
-Profiler::BottleneckType Profiler::classifyBottleneck() {
-    auto& current = m_snapshot.current;
-    
-    if (current.fps < 30) {
-        double cpuRatio = current.cpuTimeMs / (current.frameTimeMs > 0 ? current.frameTimeMs : 1.0);
-        double gpuRatio = current.gpuTimeMs / (current.frameTimeMs > 0 ? current.frameTimeMs : 1.0);
-        
-        if (cpuRatio > 0.7) {
-            m_snapshot.bottleneck = BottleneckType::CPU_BOUND;
-        } else if (gpuRatio > 0.7) {
-            m_snapshot.bottleneck = BottleneckType::GPU_BOUND;
-        } else if (current.memoryUsageMb > 1000) {
-            m_snapshot.bottleneck = BottleneckType::MEMORY_BOUND;
-        } else {
-            m_snapshot.bottleneck = BottleneckType::UNKNOWN;
-        }
-    } else if (current.fps < 50) {
-        m_snapshot.bottleneck = BottleneckType::UNKNOWN;
-    } else {
-        m_snapshot.bottleneck = BottleneckType::STABLE;
-    }
-    
-    m_snapshot.historicalAvg = current;
-    return m_snapshot.bottleneck;
-}
-
 std::string Profiler::getBottleneckDescription() const {
     switch (m_snapshot.bottleneck) {
         case BottleneckType::CPU_BOUND: return "CPU-bound";
