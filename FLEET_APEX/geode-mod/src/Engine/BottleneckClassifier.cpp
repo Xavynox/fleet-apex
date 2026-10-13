@@ -7,7 +7,7 @@ BottleneckClassifier::BottleneckClassifier(Profiler& profiler)
     : m_profiler(profiler) {
 }
 
-BottleneckClassifier::~BottleneckClassifier() = default;
+BottleneckClassifier::~BottleneckClassifier() {}
 
 void BottleneckClassifier::setTargetFrameTime(double fps) {
     if (fps > 0) {

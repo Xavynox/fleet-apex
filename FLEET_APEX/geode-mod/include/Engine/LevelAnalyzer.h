@@ -82,7 +82,15 @@ private:
         std::vector<RegionInfo> highCostRegions;
         std::vector<RegionInfo> particleHeavyRegions;
         std::vector<RegionInfo> glowHeavyRegions;
+        std::vector<int32_t> staticObjectIds;
+        std::vector<std::string> optimizationCandidates;
+        std::string primaryBottleneck;
     };
+
+    static ObjectType classifyObjectType(int32_t objectTypeValue);
+    static EffectCategory analyzeEffects(const ObjectInfo& obj);
+    static bool isObjectStatic(const ObjectInfo& obj);
+    static double estimateObjectCost(const ObjectInfo& obj);
 
 private:
     std::unique_ptr<LevelProfileImpl> m_profile;

@@ -62,7 +62,7 @@ private:
 
 public:
     explicit BottleneckClassifier(Profiler& profiler);
-    ~BottleneckClassifier() = default;
+    ~BottleneckClassifier();
 
     void setTargetFrameTime(double fps);
     BottleneckReport classify();
