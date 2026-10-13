@@ -78,6 +78,38 @@ target_include_directories(fleet-apex PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Engine
 )
 
+# Geode SDK integration
+# The Geode SDK provides CMake configuration that must be included
+# GEODE_SDK should be set by the build environment (GitHub Actions, local install)
+if(NOT GEODE_SDK)
+    message(STATUS "GEODE_SDK not set - attempting SDK discovery")
+    # Try common locations
+    find_path(GEODE_SDK
+        NAMESPACE GeodeSDK
+        HINTS
+        /usr/local/geode
+        /opt/geode
+        $ENV{HOME}/geode
+    )
+endif()
+
+if(GEODE_SDK AND NOT GEODE_SDK_INITIALIZED)
+    # Include the Geode SDK CMake configuration
+    # This provides Geode-specific build targets and setup
+    if(EXISTS "${GEODE_SDK}/CMakeLists.txt")
+        add_subdirectory(${GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
+    elseif(EXISTS "${HOME}/.local/geode/CMakeLists.txt")
+        add_subdirectory("${HOME}/.local/geode" ${CMAKE_CURRENT_BINARY_DIR}/geode)
+    endif()
+    
+    # Mark as initialized so we don't re-add
+    set(GEODE_SDK_INITIALIZED TRUE CACHE BOOL "Geode SDK has been initialized")
+endif()
+
+# Configure the mod target using Geode's setup function
+# This must be called after SDK integration to properly configure the mod
+setup_geode_mod(fleet-apex)
+
 # Platform-specific settings for Android
 if(ANDROID)
     target_compile_definitions(fleet-apex PRIVATE ANDROID=1)
