@@ -28,7 +28,7 @@ public:
     };
 
     enum class Platform {
-        ANDROID,
+        Android,
         DESKTOP_WINDOWS,
         DESKTOP_LINUX,
         DESKTOP_MACOS,

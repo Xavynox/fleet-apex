@@ -81,7 +81,7 @@ bool FleetCore::initializeAdaptiveEngine() {
 
 void FleetCore::updatePlatform() {
 #if defined(__ANDROID__)
-    m_platform = Platform::ANDROID;
+    m_platform = Platform::Android;
 #elif defined(_WIN32)
     m_platform = Platform::DESKTOP_WINDOWS;
 #elif defined(__linux__)
@@ -95,7 +95,7 @@ void FleetCore::updatePlatform() {
 
 std::string FleetCore::getPlatformString() const {
     switch (m_platform) {
-        case Platform::ANDROID: return "Android";
+        case Platform::Android: return "Android";
         case Platform::DESKTOP_WINDOWS: return "Windows";
         case Platform::DESKTOP_LINUX: return "Linux";
         case Platform::DESKTOP_MACOS: return "macOS";

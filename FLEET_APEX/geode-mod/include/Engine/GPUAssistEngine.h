@@ -46,17 +46,15 @@ public:
     GPUAssistEngine(Profiler& profiler, LevelAnalyzer& analyzer);
     ~GPUAssistEngine() = default;
 
-    void enable() {}  // Stub for diagnostic release
-    void disable() {}
-    bool isActive() const { return m_isActive; }
+    void enable();
+    void disable();
+    bool isActive() const;
 
-    std::vector<GPUOffloadCandidate> analyze() {
-        return {};  // Empty in diagnostic release
-    }
-    bool executeCandidate(GPUOffloadCandidate) { return false; }
-    std::vector<std::string> getHistory() const { return {}; }
-    std::string getStatus() const { return m_isActive ? "ENABLED" : "DISABLED"; }
-    void clearHistory() {}
+    std::vector<GPUOffloadCandidate> analyze();
+    bool executeCandidate(GPUOffloadCandidate candidate);
+    std::vector<std::string> getHistory() const;
+    std::string getStatus() const;
+    void clearHistory();
 };
 
 } // namespace fleetapex
