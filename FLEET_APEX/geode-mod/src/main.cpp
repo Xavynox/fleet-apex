@@ -14,7 +14,6 @@
  */
 
 #include "FleetCore.h"
-#include "Logger.h"
 
 #include <Geode/Geode.hpp>
 #include <Geode/utils/Utils.hpp>
@@ -51,7 +50,7 @@ public:
         config.enableAutoOptimization = Mod::get()->getBool("enable_auto_optimization", true);
         
         // v0.2 diagnostic mode: SAFETY FIRST
-        config.defaultMode = FleetCore::Config::PerformanceMode::SAFE;
+        config.defaultMode = AdaptiveEngine::PerformanceMode::SAFE;
         config.enableCPULiberation = false;  // OFF for diagnostic
         config.enableGPUAssist = false;      // OFF for diagnostic
         
