@@ -87,7 +87,8 @@ else()
 endif()
 
 # Configure the mod target using Geode's setup function
-setup_geode_mod(fleet-apex)
+# Use LINK_TYPE PRIVATE to match the existing keyword-signature target_link_libraries call
+setup_geode_mod(fleet-apex LINK_TYPE PRIVATE)
 
 # Platform-specific settings for Android
 if(ANDROID)
