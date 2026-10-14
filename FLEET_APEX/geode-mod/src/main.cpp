@@ -16,9 +16,7 @@
 #include "FleetCore.h"
 
 #include <Geode/Geode.hpp>
-#include <Geode/utils/Utils.hpp>
 #include <Geode/loader/Mod.hpp>
-#include <Geode hooking.hpp>
 
 using namespace geode;
 using namespace fleetapex;
