@@ -7,6 +7,9 @@
   "developer": "xavynox",
   "description": "FLEET APEX - The Most Advanced Geometry Dash Optimization Mod. A runtime CPU↔GPU cooperative performance engine for Geometry Dash.",
   "resource_pack": "",
+  "gd": {
+    "android": "2.2081"
+  },
   "geode_version": ">=1.9.0",
   "dependencies": [
     {
