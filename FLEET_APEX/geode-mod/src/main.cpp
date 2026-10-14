@@ -39,37 +39,38 @@ public:
     bool initialize() {
         if (m_isInitialized) return true;
 
-        log::info().post("FLEET APEX v0.2 initializing...");
+        log::info("FLEET APEX v0.2 initializing...");
         
         // Load mod settings - diagnostics only, optimizations off
         FleetCore::Config config;
-        config.enableProfiling = Mod::get()->getBool("enable_profiling", true);
-        config.enableLevelAnalysis = Mod::get()->getBool("enable_level_analysis", true);
-        config.enableAutoOptimization = Mod::get()->getBool("enable_auto_optimization", true);
+        // Use fixed defaults for diagnostic build (no settings section in mod.json yet)
+        config.enableProfiling = true;
+        config.enableLevelAnalysis = true;
+        config.enableAutoOptimization = false;
         
         // v0.2 diagnostic mode: SAFETY FIRST
         config.defaultMode = AdaptiveEngine::PerformanceMode::SAFE;
         config.enableCPULiberation = false;  // OFF for diagnostic
         config.enableGPUAssist = false;      // OFF for diagnostic
         
-        config.enableDebugLogging = Mod::get()->getBool("enable_debug_logging", Mod::get()->getBool("debug_logs", false));
+        config.enableDebugLogging = false;
         
         m_core->setConfig(config);
 
         if (!m_core->initialize()) {
-            log::error().post("Failed to initialize FLEET APEX core");
+            log::error("Failed to initialize FLEET APEX core");
             return false;
         }
 
         m_isInitialized = true;
-        log::info().post("FLEET APEX v0.2 initialized successfully (diagnostic mode)");
+        log::info("FLEET APEX v0.2 initialized successfully (diagnostic mode)");
         return true;
     }
 
     void shutdown() {
         if (!m_isInitialized) return;
         
-        log::info().post("Shutting down FLEET APEX...");
+        log::info("Shutting down FLEET APEX...");
         m_core->shutdown();
         m_isInitialized = false;
     }
@@ -103,41 +104,39 @@ void onFrameEndHook() {
     }
 }
 
-// Mod entry point
-$on_load
-void init() {
-    log::info() << "FLEET APEX v0.2 loading...";
+// Mod entry point - using Geode's proper entry point macro
+GEODE_PLUGIN_MAIN(void) {
+    log::info("FLEET APEX v0.2 loading...");
     
     try {
         g_mod = std::make_unique<FleetAPEXModImpl>();
         
         if (!g_mod->initialize()) {
-            log::error() << "FLEET APEX v0.2 failed to initialize";
+            log::error("FLEET APEX v0.2 failed to initialize");
             g_mod.reset();
             return;
         }
         
-        log::info() << "FLEET APEX v0.2 loaded successfully";
+        log::info("FLEET APEX v0.2 loaded successfully");
         
-#if defined(ANDROID)
-        log::info() << "Running on Android platform";
-#elif defined(_WIN32)
-        log::info() << "Running on Windows platform";
-#elif defined(__linux__)
-        log::info() << "Running on Linux platform";
-#elif defined(__APPLE__)
-        log::info() << "Running on macOS platform";
-#endif
+    #if defined(ANDROID)
+        log::info("Running on Android platform");
+    #elif defined(_WIN32)
+        log::info("Running on Windows platform");
+    #elif defined(__linux__)
+        log::info("Running on Linux platform");
+    #elif defined(__APPLE__)
+        log::info("Running on macOS platform");
+    #endif
 
     } catch (const std::exception& e) {
-        log::error() << "FLEET APEX v0.2 exception: " << e.what();
+        log::error("FLEET APEX v0.2 exception: {}", e.what());
         g_mod.reset();
     }
 }
 
-$on_unload
-void shutdown() {
-    log::info() << "FLEET APEX v0.2 unloading";
+void on_mod_unload() {
+    log::info("FLEET APEX v0.2 unloading");
     g_mod.reset();
 }
 
