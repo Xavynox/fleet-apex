@@ -13,37 +13,23 @@
  * to ensure zero gameplay changes while validating the architecture.
  */
 
-#include "FleetCore.h"
+#include <Geode/DefaultInclude.hpp>
 
-#include <Geode/Geode.hpp>
-#include <Geode/loader/Mod.hpp>
+#include "FleetCore.h"
 
 using namespace geode;
 using namespace fleetapex;
 
-class FleetAPEXModImpl {
-private:
-    std::unique_ptr<FleetCore> m_core;
-    bool m_isEnabled = true;
-    bool m_isInitialized = false;
+// Global state
+static std::unique_ptr<FleetCore> g_core = nullptr;
 
-public:
-    FleetAPEXModImpl() : m_core(std::make_unique<FleetCore>()) {}
-
-    ~FleetAPEXModImpl() {
-        if (m_isInitialized) {
-            shutdown();
-        }
-    }
-
-    bool initialize() {
-        if (m_isInitialized) return true;
-
-        log::info("FLEET APEX v0.2 initializing...");
-        
-        // Load mod settings - diagnostics only, optimizations off
-        FleetCore::Config config;
-        // Use fixed defaults for diagnostic build (no settings section in mod.json yet)
+// Mod lifecycle handlers using Geode's documented pattern
+$on_mod(Loaded) {
+    log::info("FLEET APEX v0.2 loading...");
+    
+    try {
+        // Initialize core with diagnostic defaults
+        auto config = FleetCore::Config();
         config.enableProfiling = true;
         config.enableLevelAnalysis = true;
         config.enableAutoOptimization = false;
@@ -52,72 +38,17 @@ public:
         config.defaultMode = AdaptiveEngine::PerformanceMode::SAFE;
         config.enableCPULiberation = false;  // OFF for diagnostic
         config.enableGPUAssist = false;      // OFF for diagnostic
-        
         config.enableDebugLogging = false;
         
-        m_core->setConfig(config);
-
-        if (!m_core->initialize()) {
+        g_core = std::make_unique<FleetCore>();
+        g_core->setConfig(config);
+        
+        if (!g_core->initialize()) {
             log::error("Failed to initialize FLEET APEX core");
-            return false;
-        }
-
-        m_isInitialized = true;
-        log::info("FLEET APEX v0.2 initialized successfully (diagnostic mode)");
-        return true;
-    }
-
-    void shutdown() {
-        if (!m_isInitialized) return;
-        
-        log::info("Shutting down FLEET APEX...");
-        m_core->shutdown();
-        m_isInitialized = false;
-    }
-
-    void onFrameStart() {
-        if (!m_isInitialized || !m_isEnabled) return;
-        m_core->onFrameStart();
-    }
-
-    void onFrameEnd() {
-        if (!m_isInitialized || !m_isEnabled) return;
-        m_core->onFrameEnd();
-    }
-
-    FleetCore* getCore() { return m_core.get(); }
-};
-
-// Global mod instance
-static std::unique_ptr<FleetAPEXModImpl> g_mod;
-
-// Frame hook implementation
-void onFrameStartHook() {
-    if (g_mod) {
-        g_mod->onFrameStart();
-    }
-}
-
-void onFrameEndHook() {
-    if (g_mod) {
-        g_mod->onFrameEnd();
-    }
-}
-
-// Mod entry point - using Geode's proper entry point macro
-GEODE_PLUGIN_MAIN() {
-    log::info("FLEET APEX v0.2 loading...");
-    
-    try {
-        g_mod = std::make_unique<FleetAPEXModImpl>();
-        
-        if (!g_mod->initialize()) {
-            log::error("FLEET APEX v0.2 failed to initialize");
-            g_mod.reset();
             return;
         }
         
-        log::info("FLEET APEX v0.2 loaded successfully");
+        log::info("FLEET APEX v0.2 initialized successfully (diagnostic mode)");
         
     #if defined(ANDROID)
         log::info("Running on Android platform");
@@ -128,32 +59,16 @@ GEODE_PLUGIN_MAIN() {
     #elif defined(__APPLE__)
         log::info("Running on macOS platform");
     #endif
-
+        
     } catch (const std::exception& e) {
-        log::error("FLEET APEX v0.2 exception: {}", e.what());
-        g_mod.reset();
+        log::error("FLEET APEX v0.2 exception during load: {}", e.what());
     }
 }
 
-void on_unload_hook() {
+$on_mod(Unload) {
     log::info("FLEET APEX v0.2 unloading");
-    g_mod.reset();
-}
-
-// Frame timing hooks - using Geode's hooking system
-class FrameHooks {
-public:
-    FrameHooks() {
-        // These hooks would be implemented based on actual GD version
-        // At this diagnostic stage, we're just setting up the structure
+    if (g_core) {
+        g_core->shutdown();
+        g_core.reset();
     }
-};
-
-// For actual Gameplay Dash integration, the following would be implemented:
-// - Hook into gd::GameScene::create() for level load
-// - Hook into object creation functions
-// - Hook into frame timing functions
-// 
-// The C++ implementation provides the full diagnostic framework.
-// Actual hooks require reverse engineering / SDK discovery and
-// will be implemented when the Geode SDK is properly available.
+}
