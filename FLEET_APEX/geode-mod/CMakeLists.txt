@@ -67,8 +67,8 @@ target_include_directories(fleet-apex-core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Engine
 )
 
-# Main executable
-add_executable(fleet-apex ${MOD_SOURCES})
+# Mod library - Geode mods are shared libraries
+add_library(fleet-apex SHARED ${MOD_SOURCES})
 
 target_link_libraries(fleet-apex PRIVATE fleet-apex-core)
 

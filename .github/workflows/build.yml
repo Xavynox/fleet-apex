@@ -33,11 +33,11 @@ jobs:
           target: Android64
 
       - name: Upload Geode mod artifact
-        if: steps.build_mod.outputs.geode_file != ''
+        if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
           name: fleet-apex-v0.2-android-arm64
-          path: ${{ steps.build_mod.outputs.geode_file }}
+          path: ${{ steps.build_mod.outputs.build-output }}
           retention-days: 30
 
   build-windows:
@@ -56,11 +56,11 @@ jobs:
           target: Windows64
 
       - name: Upload Geode mod artifact
-        if: steps.build_mod.outputs.geode_file != ''
+        if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
           name: fleet-apex-v0.2-windows-x64
-          path: ${{ steps.build_mod.outputs.geode_file }}
+          path: ${{ steps.build_mod.outputs.build-output }}
           retention-days: 30
 
   build-linux:
@@ -79,11 +79,11 @@ jobs:
           target: Linux64
 
       - name: Upload Geode mod artifact
-        if: steps.build_mod.outputs.geode_file != ''
+        if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
           name: fleet-apex-v0.2-linux-x64
-          path: ${{ steps.build_mod.outputs.geode_file }}
+          path: ${{ steps.build_mod.outputs.build-output }}
           retention-days: 30
 
   build-macos:
@@ -102,9 +102,9 @@ jobs:
           target: macOS64
 
       - name: Upload Geode mod artifact
-        if: steps.build_mod.outputs.geode_file != ''
+        if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
           name: fleet-apex-v0.2-macos-x64
-          path: ${{ steps.build_mod.outputs.geode_file }}
+          path: ${{ steps.build_mod.outputs.build-output }}
           retention-days: 30
