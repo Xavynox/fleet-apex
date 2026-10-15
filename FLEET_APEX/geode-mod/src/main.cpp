@@ -24,6 +24,8 @@ using namespace fleetapex;
 static std::unique_ptr<FleetCore> g_core = nullptr;
 
 // Mod lifecycle handlers using Geode's documented pattern
+// Geode v5.11.1 defines: $on_mod(Loaded) - called when mod is loaded
+// Geode v5.11.1 has NO $on_mod(Unload) - use RAII / RAII pattern for cleanup
 $on_mod(Loaded) {
     log::info("FLEET APEX v0.2 loading...");
     
@@ -44,7 +46,7 @@ $on_mod(Loaded) {
         g_core->setConfig(config);
         
         if (!g_core->initialize()) {
-            log::error("Failed to initialize FLEET APEX core");
+            log::error("FLEET APEX v0.2 failed to initialize");
             return;
         }
         
@@ -65,10 +67,24 @@ $on_mod(Loaded) {
     }
 }
 
-$on_mod(Unload) {
-    log::info("FLEET APEX v0.2 unloading");
-    if (g_core) {
-        g_core->shutdown();
-        g_core.reset();
+// Geode v5.11.1 has NO $on_mod(Unload) - cleanup via RAII pattern
+// g_core unique_ptr destructor handles cleanup automatically
+// when the mod is unloaded by Geode
+
+// Frame timing hooks - using Geode's hooking system
+class FrameHooks {
+public:
+    FrameHooks() {
+        // These hooks would be implemented based on actual GD version
+        // At this diagnostic stage, we're just setting up the structure
     }
-}
+};
+
+// For actual Gameplay Dash integration, the following would be implemented:
+// - Hook into gd::GameScene::create() for level load
+// - Hook into object creation functions
+// - Hook into frame timing functions
+// 
+// The C++ implementation provides the full diagnostic framework.
+// Actual hooks require reverse engineering / SDK discovery and
+// will be implemented when the Geode SDK is properly available.
