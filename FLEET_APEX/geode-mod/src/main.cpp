@@ -105,7 +105,7 @@ void onFrameEndHook() {
 }
 
 // Mod entry point - using Geode's proper entry point macro
-GEODE_PLUGIN_MAIN(void) {
+GEODE_PLUGIN_MAIN() {
     log::info("FLEET APEX v0.2 loading...");
     
     try {
@@ -135,7 +135,7 @@ GEODE_PLUGIN_MAIN(void) {
     }
 }
 
-void on_mod_unload() {
+void on_unload_hook() {
     log::info("FLEET APEX v0.2 unloading");
     g_mod.reset();
 }
