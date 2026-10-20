@@ -61,7 +61,7 @@ void Profiler::estimateGpuTime(double ms) {
     m_snapshot.current.gpuTimeMs = ms;
 }
 
-void Profiler::classifyBottleneck() {
+Profiler::BottleneckType Profiler::classifyBottleneck() {
     auto& current = m_snapshot.current;
     
     if (current.fps < 30) {
@@ -88,6 +88,7 @@ void Profiler::classifyBottleneck() {
     }
     
     m_snapshot.historicalAvg = current;
+    return m_snapshot.bottleneck;
 }
 
 std::string Profiler::getBottleneckDescription() const {

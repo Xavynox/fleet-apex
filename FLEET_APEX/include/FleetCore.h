@@ -63,7 +63,7 @@ private:
     std::unique_ptr<AdaptiveEngine> m_adaptiveEngine;
     
     Config m_config;
-    std::string m_version = "0.1.0";
+    std::string m_version = "0.2.0";
     
     // Lifecycle callbacks
     std::function<void()> m_onInitComplete;

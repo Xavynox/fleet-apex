@@ -11,8 +11,6 @@ LevelAnalyzer::LevelAnalyzer() {
 
 LevelAnalyzer::~LevelAnalyzer() = default;
 
-// Definitions moved to header as inline - no separate definitions needed here
-
 LevelAnalyzer::ObjectType LevelAnalyzer::classifyObjectType(int32_t objectTypeValue) {
     switch (objectTypeValue) {
         case 0: return ObjectType::PLAYER;
@@ -94,6 +92,7 @@ void LevelAnalyzer::addObject(int32_t objectId, int32_t x, int32_t y, int32_t ob
     obj.scale = scale;
     obj.type = classifyObjectType(objectType);
     obj.effectCat = analyzeEffects(obj);
+    obj.metaData = metaData;  // FIX: assign metadata
     
     m_objects.push_back(obj);
     m_profile->totalObjectCount++;
@@ -126,7 +125,7 @@ void LevelAnalyzer::markAsStatic(int32_t objectId) {
             return;
         }
     }
-    m_profile->staticObjectIds.push_back(objectId);
+    // Object not found - do not add to staticObjectIds
 }
 
 void LevelAnalyzer::markAsGameplayCritical(int32_t objectId, bool critical) {

@@ -20,15 +20,14 @@ BottleneckClassifier::BottleneckReport BottleneckClassifier::classify() {
     auto current = snapshot.current;
     
     BottleneckReport report;
-    
-    // Calculate ratios
-    if (current.frameTimeMs > 0) {
-        report.cpuWorkRatio = current.cpuTimeMs / current.frameTimeMs;
-        report.gpuWorkRatio = current.gpuTimeMs / current.frameTimeMs;
-    }
-    
-    report.frameTime = current.frameTimeMs;
-    report.targetFrameTime = m_targetFrameTime;
+    // Zero-initialize all members so no branch can leave them uninitialized
+    report.state = BottleneckState::UNKNOWN;
+    report.confidence = ConfidenceLevel::LOW;
+    report.cpuWorkRatio = 0.0;
+    report.gpuWorkRatio = 0.0;
+    report.stabilityScore = 0.0;
+    report.frameTime = 0.0;
+    report.targetFrameTime = 0.0;
     
     // Calculate stability score
     if (current.frameTimeMs > 0) {

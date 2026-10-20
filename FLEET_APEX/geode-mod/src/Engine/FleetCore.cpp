@@ -21,6 +21,9 @@ bool FleetCore::initialize() {
     
     m_status = InitStatus::INITIALIZING;
     
+    // Resolve the platform so getPlatform()/getFullVersion() report correctly
+    updatePlatform();
+    
     if (!initializeProfiler()) {
         m_status = InitStatus::ERROR;
         if (m_onError) m_onError("Failed to initialize profiler");
