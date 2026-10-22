@@ -202,7 +202,7 @@ void PerformanceHUD::refreshMetrics() {
     char buffer[256];
     
     // FPS - only show when we have real measurements
-    if (snapshot.frameSamples > 0 && snapshot.current.frameTimeMs > 0) {
+    if (snapshot.hasValidData && snapshot.frameSamples > 0 && snapshot.current.frameTimeMs > 0) {
         snprintf(buffer, sizeof(buffer), "FPS: %.1f", snapshot.current.fps);
         if (m_fpsLabel) m_fpsLabel->setString(buffer);
     } else {
@@ -212,7 +212,7 @@ void PerformanceHUD::refreshMetrics() {
     // Frame time
     if (snapshot.frameSamples > 0) {
         snprintf(buffer, sizeof(buffer), "Frame: %.2f ms (avg %.2f)", 
-                 snapshot.current.frameTimeMs, snapshot.averageFrameTimeMs);
+                 snapshot.current.frameTimeMs, snapshot.current.averageFrameTimeMs);
         if (m_frameTimeLabel) m_frameTimeLabel->setString(buffer);
     } else {
         if (m_frameTimeLabel) m_frameTimeLabel->setString("Frame: N/A");
@@ -228,8 +228,8 @@ void PerformanceHUD::refreshMetrics() {
     // Data availability line - explicitly mark unsupported metrics
     if (m_dataStatusLabel) {
         snprintf(buffer, sizeof(buffer), "GPU: N/A  CPU: %s  Samples: %zu",
-                 snapshot.cpuTimeValid ? "meas." : "N/A",
-                 snapshot.frameSamples);
+                 report.hasCpuCallbackTime ? "meas." : "N/A",
+                 report.sampleCount);
         m_dataStatusLabel->setString(buffer);
     }
 }

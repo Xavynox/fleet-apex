@@ -40,6 +40,7 @@ set(APEX_CORE_SOURCES
     src/Engine/CPULiberationEngine.cpp
     src/Engine/GPUAssistEngine.cpp
     src/Engine/FleetCore.cpp
+    src/Engine/PerformanceHUD.cpp
 )
 
 # Header files

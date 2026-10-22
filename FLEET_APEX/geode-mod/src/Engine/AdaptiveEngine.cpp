@@ -6,6 +6,7 @@
 #include "GPUAssistEngine.h"
 #include <algorithm>
 #include <numeric>
+#include <sstream>
 
 namespace fleetapex {
 
@@ -36,38 +37,30 @@ void AdaptiveEngine::initialize() {
 }
 
 void AdaptiveEngine::update() {
-    // Update the profiler with the latest frame
+    // Run bottleneck classification against current profiler snapshot
+    auto bottleneck = m_bottleneckClassifier->classify();
     m_profiler.classifyBottleneck();
 
-    // Update runtime state from profiler
-    auto snapshot = m_profiler.getSnapshot();
-    auto& current = snapshot.current;
-    m_runtimeState.frameTimeStability = 1.0 - (current.frameTimeVariance / (current.frameTimeMs * current.frameTimeMs + 0.001));
-    m_runtimeState.recentSpikeCount = 0;
-    for (double ft : snapshot.frameHistory) {
-        if (ft > 30.0) m_runtimeState.recentSpikeCount++;
-    }
-    if (current.frameTimeMs > 0) {
-        m_runtimeState.cpuUsageRatio = current.cpuTimeMs / current.frameTimeMs;
-        m_runtimeState.gpuUsageRatio = current.gpuTimeMs / current.frameTimeMs;
-    }
+    // Read the current snapshot
+    auto& current = m_profiler.getSnapshot().current;
+    
+    // Report measured metrics only
+    m_hasEnoughData = m_profiler.getSnapshot().hasValidData &&
+                      m_profiler.getSnapshot().frameSamples >= 5;
+
+    // Calculate frame-time stability from historical variance
+    m_runtimeState.frameTimeStability = 1.0 - (current.frameTimeVariance /
+        (current.frameTimeMs * current.frameTimeMs + 0.001));
+    m_runtimeState.recentSpikeCount = m_profiler.getSnapshot().frameHistory.empty() ? 0 : 0;
+    
+    m_runtimeState.cpuUsageRatio = current.cpuTimeMs / std::max(current.frameTimeMs, 0.001);
+    m_runtimeState.cpuUsageValid = current.cpuTimeValid;
+    m_runtimeState.gpuUsageRatio = current.gpuTimeMs / std::max(current.frameTimeMs, 0.001);
+    m_runtimeState.gpuUsageValid = current.gpuTimeValid;
     m_runtimeState.memoryPressure = current.memoryUsageMb;
 
-    // Classify bottleneck
-    auto bottleneckReport = m_bottleneckClassifier->classify();
-
-    // Analyze CPU liberation opportunities
-    auto cpuAnalysis = m_cpuLiberation->analyze();
-
-    // Analyze GPU assist opportunities
-    auto gpuCandidates = m_gpuAssist->analyze();
-
-    // Generate optimization decisions (for now, we just log in diagnostic mode)
-    // In a full implementation, we would use the balancer to decide and then act.
-    // For v0.2 diagnostic, we only collect data and do not apply optimizations.
-
-    // Determine if we have enough data to make a decision (e.g., at least 30 frames)
-    m_hasEnoughData = snapshot.frameHistory.size() >= 30;
+    // Recent spikes
+    m_runtimeState.recentSpikeCount = m_profiler.getSnapshot().recentSpikeIndex >= 0 ? 1 : 0;
 }
 
 void AdaptiveEngine::setPerformanceMode(PerformanceMode mode) {
@@ -75,18 +68,47 @@ void AdaptiveEngine::setPerformanceMode(PerformanceMode mode) {
 }
 
 void AdaptiveEngine::setTargetFrameRate(double fps) {
-    // Not used in this diagnostic version, but we set it for the bottleneck classifier
     m_bottleneckClassifier->setTargetFrameTime(fps);
 }
 
 AdaptiveEngine::Report AdaptiveEngine::getReport() const {
     Report report;
+    
+    // Bottleneck classification: honest confidence from profiler
+    const auto& snapshot = m_profiler.getSnapshot();
     report.bottleneck = m_profiler.getBottleneckDescription();
-    report.primaryCostSource = "unknown";
+    report.confidence = snapshot.confidence;          // honest: 0.0-1.0 based on samples
+    report.hasSufficientData = m_hasEnoughData;
+    report.sampleCount = snapshot.frameSamples;
+    
+    // Observed metrics only
+    report.measuredFps = snapshot.current.fps;
+    report.hasFps = m_hasEnoughData;
+    report.averageFrameTimeMs = snapshot.current.averageFrameTimeMs;
+    report.hasAverageFrameTime = snapshot.frameSamples > 0;
+    report.cpuCallbackMs = snapshot.current.cpuTimeMs;
+    report.hasCpuCallbackTime = current.cpuTimeValid;
+    
+    // Explicitly unavailable
+    const auto& current = snapshot.current;
+    report.gpuTimeAvailable = current.gpuTimeValid;   // always false in v0.3
+    report.memoryAvailable = current.memoryValid;     // always false in v0.3
+    report.objectCountAvailable = current.objectCountValid;
+    
+    // Human-readable descriptions
+    report.status = m_hasEnoughData ? "Diagnostics active" : "Warming up / insufficient data";
+    
+    // Compose data-availability summary
+    std::ostringstream oss;
+    oss << "FPS=" << (m_hasEnoughData ? std::to_string(static_cast<int>(snapshot.current.fps)) : "N/A")
+        << ", CPU callback=" << (current.cpuTimeValid ? std::to_string(static_cast<int>(current.cpuTimeMs)) + " ms" : "N/A")
+        << ", GPU: N/A  Memory: N/A";
+    report.dataAvailability = oss.str();
+    
+    // Diagnostic-only: never apply optimizations, always recommend monitoring
+    report.shouldOptimize = false;
     report.recommendedAction = "Monitor and maintain";
-    report.confidence = m_hasEnoughData ? 0.8 : 0.3;
-    report.shouldOptimize = false; // Diagnostic mode: no optimizations applied
-    report.status = m_isOptimized ? "Optimized" : (m_hasEnoughData ? "Ready" : "Warming up");
+    
     return report;
 }
 

@@ -1,5 +1,10 @@
 /**
- * FLEET APEX v0.2 - Adaptive Engine Header
+ * FLEET APEX v0.3 - Adaptive Engine Header
+ * 
+ * Decision and reporting layer.
+ * 
+ * In v0.3 the engine is OBSERVATIONAL ONLY: it collects and reports
+ * diagnostics but never applies gameplay-affecting optimizations.
  */
 
 #ifndef FLEET_APEX_ADAPTIVE_ENGINE_H
@@ -41,6 +46,8 @@ public:
         double cpuUsageRatio = 0.0;
         double gpuUsageRatio = 0.0;
         uint64_t memoryPressure = 0;
+        bool cpuRatioValid = false;
+        bool gpuRatioValid = false;
     };
 
 private:
@@ -74,14 +81,51 @@ public:
     const std::vector<OptimizationDecision>& getPendingDecisions() const { return m_pendingDecisions; }
     void clearPendingDecisions() { m_pendingDecisions.clear(); }
 
+    /**
+     * Diagnostic report.
+     *
+     * Every field reflects what was actually measured. Fields that could
+     * not be determined are reported as such instead of being filled with
+     * plausible-looking defaults.
+     */
     struct Report {
+        // Observed bottleneck classification ("Stable", "CPU-bound", ...).
         std::string bottleneck;
-        std::string primaryCostSource;
-        std::string recommendedAction;
-        double confidence;
-        bool shouldOptimize;
+        
+        // Confidence in the classification, 0.0 - 1.0, derived from the
+        // number and consistency of collected samples. Zero means the
+        // classification could not be made.
+        double confidence = 0.0;
+        
+        // Whether the classification rests on enough samples to be useful.
+        bool hasSufficientData = false;
+        
+        // Number of valid frame samples behind the classification.
+        size_t sampleCount = 0;
+        
+        // Measured values. `has*` flags say whether the value is real.
+        double measuredFps = 0.0;
+        bool hasFps = false;
+        double averageFrameTimeMs = 0.0;
+        bool hasAverageFrameTime = false;
+        double cpuCallbackMs = 0.0;
+        bool hasCpuCallbackTime = false;
+        
+        // Explicitly unavailable metrics are reported as such.
+        bool gpuTimeAvailable = false;
+        bool memoryAvailable = false;
+        bool objectCountAvailable = false;
+        
+        // Human-readable summary of what is and is not known.
         std::string status;
+        std::string dataAvailability;
+        
+        // v0.3: recommendations are observational only. No optimization
+        // is ever applied by this engine.
+        std::string recommendedAction;
+        bool shouldOptimize = false;
     };
+    
     Report getReport() const;
 };
 

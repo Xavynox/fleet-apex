@@ -16,6 +16,7 @@
 #include <Geode/DefaultInclude.hpp>
 
 #include "FleetCore.h"
+#include "PerformanceHUD.h"
 
 using namespace geode;
 using namespace fleetapex;
