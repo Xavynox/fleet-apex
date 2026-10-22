@@ -54,9 +54,9 @@ void AdaptiveEngine::update() {
     m_runtimeState.recentSpikeCount = m_profiler.getSnapshot().frameHistory.empty() ? 0 : 0;
     
     m_runtimeState.cpuUsageRatio = current.cpuTimeMs / std::max(current.frameTimeMs, 0.001);
-    m_runtimeState.cpuUsageValid = current.cpuTimeValid;
+    m_runtimeState.cpuRatioValid = current.cpuTimeValid;
     m_runtimeState.gpuUsageRatio = current.gpuTimeMs / std::max(current.frameTimeMs, 0.001);
-    m_runtimeState.gpuUsageValid = current.gpuTimeValid;
+    m_runtimeState.gpuRatioValid = current.gpuTimeValid;
     m_runtimeState.memoryPressure = current.memoryUsageMb;
 
     // Recent spikes
@@ -87,7 +87,7 @@ AdaptiveEngine::Report AdaptiveEngine::getReport() const {
     report.averageFrameTimeMs = snapshot.current.averageFrameTimeMs;
     report.hasAverageFrameTime = snapshot.frameSamples > 0;
     report.cpuCallbackMs = snapshot.current.cpuTimeMs;
-    report.hasCpuCallbackTime = current.cpuTimeValid;
+    report.hasCpuCallbackTime = snapshot.current.cpuTimeValid;
     
     // Explicitly unavailable
     const auto& current = snapshot.current;

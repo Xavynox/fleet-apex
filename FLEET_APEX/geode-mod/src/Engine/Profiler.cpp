@@ -18,7 +18,7 @@ Profiler::Profiler() {
     m_snapshot.current.memoryValid = false;
     m_snapshot.current.objectCountValid = false;
     m_snapshot.current.particleCountValid = false;
-    m_snapshot.frameTimeMs = 0.0;
+    m_snapshot.current.frameTimeMs = 0.0;
     m_snapshot.current.fps = 0.0;
 }
 
@@ -96,18 +96,6 @@ void Profiler::recordCallbackDuration(double ms) {
     m_snapshot.current.cpuTimeValid = true;
 }
 
-void Profiler::estimateCpuTime(double ms) {
-    m_snapshot.current.cpuTimeMs = ms;
-    m_snapshot.current.cpuTimeValid = true;
-}
-
-void Profiler::estimateGpuTime(double ms) {
-    // Intentionally unsupported in v0.3 diagnostic-only mode.
-    // No validated GPU timer exists; do not present as measured.
-    m_snapshot.current.gpuTimeMs = 0.0;
-    m_snapshot.current.gpuTimeValid = false;
-}
-
 Profiler::BottleneckType Profiler::classifyBottleneck() {
     auto& current = m_snapshot.current;
     
@@ -170,10 +158,6 @@ std::string Profiler::getBottleneckDescription() const {
     }
 }
 
-double Profiler::getAverageFrameTime() const {
-    return m_cachedAverage;
-}
-
 double Profiler::getMinFrameTime() const {
     if (m_frameHistory.empty()) return 0.0;
     return *std::min_element(m_frameHistory.begin(), m_frameHistory.end());
@@ -184,7 +168,7 @@ double Profiler::getMaxFrameTime() const {
     return *std::max_element(m_frameHistory.begin(), m_frameHistory.end());
 }
 
-int Profiler::countSpikes(double thresholdMs, double durationWindow) const {
+int Profiler::countSpikes(double thresholdMs) const {
     int count = 0;
     for (double frameTime : m_frameHistory) {
         if (frameTime > thresholdMs) {
@@ -193,9 +177,6 @@ int Profiler::countSpikes(double thresholdMs, double durationWindow) const {
     }
     return count;
 }
-
-double Profiler::getMedianFrameTime() const { return m_cachedMedian; }
-double Profiler::getP99FrameTime() const { return m_cachedP99; }
 
 void Profiler::resetFrameStatistics() {
     m_frameHistory.clear();
@@ -218,6 +199,13 @@ void Profiler::resetFrameStatistics() {
     m_cachedVariance = 0.0;
     m_spikeCount = 0;
     // Keep m_historySize and profiling settings intact
+}
+
+void Profiler::setHistorySize(size_t size) {
+    m_historySize = size;
+    if (m_frameHistory.size() > size) {
+        m_frameHistory.erase(m_frameHistory.begin(), m_frameHistory.begin() + (m_frameHistory.size() - size));
+    }
 }
 
 void Profiler::reset() {
