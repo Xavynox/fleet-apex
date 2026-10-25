@@ -6,6 +6,7 @@
 #include <string>
 
 using namespace geode;
+using namespace cocos2d;
 
 namespace fleetapex {
 
@@ -33,7 +34,7 @@ void PerformanceHUD::destroy() {
     if (!m_initialized) return;
     
     // Remove all nodes from parent safely
-    auto nodes = {
+    cocos2d::CCNode* nodes[] = {
         m_background,
         m_titleLabel,
         m_fpsLabel,
@@ -165,7 +166,7 @@ void PerformanceHUD::buildUI() {
     // Load logo as visual identity element
     auto* logo = CCSprite::createWithSpriteFrameName("logo.png"_spr);
     if (logo) {
-        m_logoSprite = std::make_unique<CCSprite>(logo);
+        m_logoSprite = logo;
         // Scale logo to a small corner badge
         auto texSize = m_logoSprite->getContentSize();
         if (texSize.width > 0 && texSize.height > 0) {

@@ -19,6 +19,7 @@
 #include "PerformanceHUD.h"
 
 using namespace geode;
+using namespace cocos2d;
 using namespace fleetapex;
 
 // Global state
@@ -64,19 +65,15 @@ $on_mod(Loaded) {
         log::info("Running on macOS platform");
     #endif
         
-        // Initialize HUD
+        // Initialize HUD (disabled by default; enable via config if desired)
         g_hud = std::make_unique<PerformanceHUD>();
         g_hud->bindCore(g_core.get());
         if (!g_hud->initialize()) {
             log::warn("FLEET APEX HUD failed to initialize");
             g_hud.reset();
         } else {
-            // Schedule HUD update via CCDirector scheduler
-            auto scheduler = CCDirector::sharedDirector()->getScheduler();
-            scheduler->schedule([](float dt) {
-                if (g_hud) g_hud->update();
-            }, nullptr, 0.0f, false, "fleetApexHUD");
-            log::info("FLEET APEX HUD scheduled for updates");
+            g_hud->setEnabled(false);  // HUD disabled by default
+            log::info("FLEET APEX HUD created (disabled by default)");
         }
         
     } catch (const std::exception& e) {
