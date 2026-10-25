@@ -1,12 +1,12 @@
 /**
- * FLEET APEX v0.2 - Geode Mod Entry Point
+ * FLEET APEX v0.3 - Geode Mod Entry Point
  * 
  * Diagnostic-Only First Release for Geometry Dash
  * 
  * This is the main entry point for the FLEET APEX Geode mod.
  * It initializes the engine and provides the main loop.
  * 
- * Phase 1 v0.2: CPU↔GPU Cooperative Foundation (Diagnostic Mode)
+ * Phase 1 v0.3: Diagnostic Mode
  * 
  * Note: In this diagnostic-only release, optimizations are DISABLED.
  * The engine measures performance but does not apply optimizations
@@ -23,12 +23,13 @@ using namespace fleetapex;
 
 // Global state
 static std::unique_ptr<FleetCore> g_core = nullptr;
+static std::unique_ptr<PerformanceHUD> g_hud = nullptr;
 
 // Mod lifecycle handlers using Geode's documented pattern
 // Geode v5.11.1 defines: $on_mod(Loaded) - called when mod is loaded
 // Geode v5.11.1 has NO $on_mod(Unload) - use RAII / RAII pattern for cleanup
 $on_mod(Loaded) {
-    log::info("FLEET APEX v0.2 loading...");
+    log::info("FLEET APEX v0.3 loading...");
     
     try {
         // Initialize core with diagnostic defaults
@@ -37,7 +38,7 @@ $on_mod(Loaded) {
         config.enableLevelAnalysis = true;
         config.enableAutoOptimization = false;
         
-        // v0.2 diagnostic mode: SAFETY FIRST
+        // v0.3 diagnostic mode: SAFETY FIRST
         config.defaultMode = AdaptiveEngine::PerformanceMode::SAFE;
         config.enableCPULiberation = false;  // OFF for diagnostic
         config.enableGPUAssist = false;      // OFF for diagnostic
@@ -47,11 +48,11 @@ $on_mod(Loaded) {
         g_core->setConfig(config);
         
         if (!g_core->initialize()) {
-            log::error("FLEET APEX v0.2 failed to initialize");
+            log::error("FLEET APEX v0.3 failed to initialize");
             return;
         }
         
-        log::info("FLEET APEX v0.2 initialized successfully (diagnostic mode)");
+        log::info("FLEET APEX v0.3 initialized successfully (diagnostic mode)");
         
     #if defined(ANDROID)
         log::info("Running on Android platform");
@@ -63,13 +64,28 @@ $on_mod(Loaded) {
         log::info("Running on macOS platform");
     #endif
         
+        // Initialize HUD
+        g_hud = std::make_unique<PerformanceHUD>();
+        g_hud->bindCore(g_core.get());
+        if (!g_hud->initialize()) {
+            log::warn("FLEET APEX HUD failed to initialize");
+            g_hud.reset();
+        } else {
+            // Schedule HUD update via CCDirector scheduler
+            auto scheduler = CCDirector::sharedDirector()->getScheduler();
+            scheduler->schedule([](float dt) {
+                if (g_hud) g_hud->update();
+            }, nullptr, 0.0f, false, "fleetApexHUD");
+            log::info("FLEET APEX HUD scheduled for updates");
+        }
+        
     } catch (const std::exception& e) {
-        log::error("FLEET APEX v0.2 exception during load: {}", e.what());
+        log::error("FLEET APEX v0.3 exception during load: {}", e.what());
     }
 }
 
-// Geode v5.11.1 has NO $on_mod(Unload) - cleanup via RAII pattern
-// g_core unique_ptr destructor handles cleanup automatically
+// Geode v5.11.1 has NO $on_mod(Unload) - cleanup via RAII / RAII pattern for cleanup
+// g_core and g_hud unique_ptr destructors handle cleanup automatically
 // when the mod is unloaded by Geode
 
 // Frame timing hooks - using Geode's hooking system

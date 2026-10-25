@@ -40,7 +40,6 @@ set(APEX_CORE_SOURCES
     src/Engine/CPULiberationEngine.cpp
     src/Engine/GPUAssistEngine.cpp
     src/Engine/FleetCore.cpp
-    src/Engine/PerformanceHUD.cpp
 )
 
 # Header files
@@ -55,9 +54,15 @@ set(APEX_CORE_HEADERS
     include/APEXMod.h
 )
 
-# Mod sources
+# Mod sources - includes Geode-dependent files
 set(MOD_SOURCES
     src/main.cpp
+    src/Engine/PerformanceHUD.cpp
+)
+
+# Header files for mod
+set(MOD_HEADERS
+    include/Engine/PerformanceHUD.h
 )
 
 # Add the engine library

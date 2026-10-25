@@ -34,13 +34,13 @@ void PerformanceHUD::destroy() {
     
     // Remove all nodes from parent safely
     auto nodes = {
-        m_background.get(),
-        m_titleLabel.get(),
-        m_fpsLabel.get(),
-        m_frameTimeLabel.get(),
-        m_bottleneckLabel.get(),
-        m_dataStatusLabel.get(),
-        m_logoSprite.get()
+        m_background,
+        m_titleLabel,
+        m_fpsLabel,
+        m_frameTimeLabel,
+        m_bottleneckLabel,
+        m_dataStatusLabel,
+        m_logoSprite
     };
     
     for (auto* node : nodes) {
@@ -49,13 +49,13 @@ void PerformanceHUD::destroy() {
         }
     }
     
-    m_background.reset();
-    m_titleLabel.reset();
-    m_fpsLabel.reset();
-    m_frameTimeLabel.reset();
-    m_bottleneckLabel.reset();
-    m_dataStatusLabel.reset();
-    m_logoSprite.reset();
+    m_background = nullptr;
+    m_titleLabel = nullptr;
+    m_fpsLabel = nullptr;
+    m_frameTimeLabel = nullptr;
+    m_bottleneckLabel = nullptr;
+    m_dataStatusLabel = nullptr;
+    m_logoSprite = nullptr;
     
     m_initialized = false;
 }
@@ -173,7 +173,7 @@ void PerformanceHUD::buildUI() {
             m_logoSprite->setScale(scale);
         }
         m_logoSprite->setPosition({panelWidth - 20.0f, panelHeight - 20.0f});
-        m_background->addChild(m_logoSprite.get());
+        m_background->addChild(m_logoSprite);
     } else {
         log::warn("FLEET APEX HUD: logo sprite unavailable, continuing without it");
     }

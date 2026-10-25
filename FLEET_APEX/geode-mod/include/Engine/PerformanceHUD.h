@@ -35,13 +35,13 @@ public:
     bool isEnabled() const { return m_enabled; }
     
 private:
-    std::unique_ptr<CCSprite> m_background;
-    std::unique_ptr<CCLabelTTF> m_titleLabel;
-    std::unique_ptr<CCLabelTTF> m_fpsLabel;
-    std::unique_ptr<CCLabelTTF> m_frameTimeLabel;
-    std::unique_ptr<CCLabelTTF> m_bottleneckLabel;
-    std::unique_ptr<CCLabelTTF> m_dataStatusLabel;
-    std::unique_ptr<CCSprite> m_logoSprite;
+    CCSprite* m_background = nullptr;
+    CCLabelTTF* m_titleLabel = nullptr;
+    CCLabelTTF* m_fpsLabel = nullptr;
+    CCLabelTTF* m_frameTimeLabel = nullptr;
+    CCLabelTTF* m_bottleneckLabel = nullptr;
+    CCLabelTTF* m_dataStatusLabel = nullptr;
+    CCSprite* m_logoSprite = nullptr;
     
     FleetCore* m_core = nullptr;
     bool m_enabled = false;
