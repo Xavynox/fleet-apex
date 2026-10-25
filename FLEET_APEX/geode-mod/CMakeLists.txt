@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Project definition
-project(fleet-apex VERSION 0.2.0 LANGUAGES CXX)
+project(fleet-apex VERSION 0.3.0 LANGUAGES CXX)
 
 # Default build type if not specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
