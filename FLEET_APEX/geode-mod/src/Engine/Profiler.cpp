@@ -238,3 +238,4 @@ std::map<std::string, double> Profiler::getMetricsMap() const {
 
 } // namespace fleetapex
 // v0.3 profiler fix: clarifyBottleneck returns BottleneckType, resolves undefined symbol
+// Rebuild trigger
