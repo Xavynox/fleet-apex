@@ -99,7 +99,7 @@ void PerformanceHUD::hide() {
 
 void PerformanceHUD::buildUI() {
     // Get the running scene safely
-    auto scene = CCDirector::sharedDirector()->getRunningScene();
+    auto scene = cocos2d::CCDirector::getInstance()->getRunningScene();
     if (!scene) {
         log::warn("FLEET APEX HUD: no running scene, HUD deferred");
         return;
@@ -111,60 +111,59 @@ void PerformanceHUD::buildUI() {
     const float y = 10.0f;
     
     // Background panel - dark translucent
-    m_background = CCSprite::createWithRect(CCRectMake(0, 0, panelWidth, panelHeight), 0, 0, 
-                                              1.0f, 1.0f, panelWidth, panelHeight);
+    m_background = cocos2d::CCSprite::create();
     if (m_background) {
-        auto color = CCLayerColor::create(ccc4(10, 14, 20, 200), panelWidth, panelHeight);
+        auto color = cocos2d::LayerColor::create(cocos2d::Color4B(10, 14, 20, 200), panelWidth, panelHeight);
         if (color) {
             m_background->addChild(color, -1);
         }
         scene->addChild(m_background, 1000);
-        m_background->setPosition({x, y});
+        m_background->setPosition(cocos2d::Vec2(x, y));
         m_background->setZOrder(1000);
     }
     
     // Title
-    m_titleLabel = CCLabelTTF::create("FLEET APEX v0.3", "bigFont.fnt", 13);
+    m_titleLabel = cocos2d::CCLabelTTF::create("FLEET APEX v0.3", "bigFont.fnt", 13);
     if (m_titleLabel) {
-        m_titleLabel->setPosition({x + 6.0f, panelHeight - 12.0f});
-        m_titleLabel->setColor({140, 220, 255});
+        m_titleLabel->setPosition(cocos2d::Vec2(x + 6.0f, panelHeight - 12.0f));
+        m_titleLabel->setColor(cocos2d::Color3B(140, 220, 255));
         m_background->addChild(m_titleLabel);
     }
     
     // FPS + frame time
-    m_fpsLabel = CCLabelTTF::create("FPS: N/A", "bigFont.fnt", 11);
+    m_fpsLabel = cocos2d::CCLabelTTF::create("FPS: N/A", "bigFont.fnt", 11);
     if (m_fpsLabel) {
-        m_fpsLabel->setPosition({x + 6.0f, panelHeight - 28.0f});
-        m_fpsLabel->setColor({235, 245, 255});
+        m_fpsLabel->setPosition(cocos2d::Vec2(x + 6.0f, panelHeight - 28.0f));
+        m_fpsLabel->setColor(cocos2d::Color3B(235, 245, 255));
         m_background->addChild(m_fpsLabel);
     }
     
     // Bottleneck classification
-    m_bottleneckLabel = CCLabelTTF::create("State: N/A", "bigFont.fnt", 11);
+    m_bottleneckLabel = cocos2d::CCLabelTTF::create("State: N/A", "bigFont.fnt", 11);
     if (m_bottleneckLabel) {
-        m_bottleneckLabel->setPosition({x + 6.0f, panelHeight - 44.0f});
-        m_bottleneckLabel->setColor({160, 230, 255});
+        m_bottleneckLabel->setPosition(cocos2d::Vec2(x + 6.0f, panelHeight - 44.0f));
+        m_bottleneckLabel->setColor(cocos2d::Color3B(160, 230, 255));
         m_background->addChild(m_bottleneckLabel);
     }
     
     // Data status line (honest about what's unavailable)
-    m_dataStatusLabel = CCLabelTTF::create("GPU: N/A", "bigFont.fnt", 10);
+    m_dataStatusLabel = cocos2d::CCLabelTTF::create("GPU: N/A", "bigFont.fnt", 10);
     if (m_dataStatusLabel) {
-        m_dataStatusLabel->setPosition({x + 6.0f, panelHeight - 60.0f});
-        m_dataStatusLabel->setColor({150, 160, 175});
+        m_dataStatusLabel->setPosition(cocos2d::Vec2(x + 6.0f, panelHeight - 60.0f));
+        m_dataStatusLabel->setColor(cocos2d::Color3B(150, 160, 175));
         m_background->addChild(m_dataStatusLabel);
     }
     
     // Frame time label
-    m_frameTimeLabel = CCLabelTTF::create("Frame: N/A", "bigFont.fnt", 10);
+    m_frameTimeLabel = cocos2d::CCLabelTTF::create("Frame: N/A", "bigFont.fnt", 10);
     if (m_frameTimeLabel) {
-        m_frameTimeLabel->setPosition({x + 6.0f, panelHeight - 76.0f});
-        m_frameTimeLabel->setColor({150, 160, 175});
+        m_frameTimeLabel->setPosition(cocos2d::Vec2(x + 6.0f, panelHeight - 76.0f));
+        m_frameTimeLabel->setColor(cocos2d::Color3B(150, 160, 175));
         m_background->addChild(m_frameTimeLabel);
     }
     
     // Load logo as visual identity element
-    auto* logo = CCSprite::createWithSpriteFrameName("logo.png"_spr);
+    auto* logo = cocos2d::CCSprite::create("logo.png"_spr);
     if (logo) {
         m_logoSprite = logo;
         // Scale logo to a small corner badge
@@ -184,7 +183,7 @@ void PerformanceHUD::update() {
     if (!m_initialized || !m_enabled || !m_core) return;
     
     // Throttle UI refresh to avoid per-frame overhead
-    m_timeSinceLastUpdate += CCDirector::sharedDirector()->getDeltaTime();
+    m_timeSinceLastUpdate += cocos2d::CCDirector::getInstance()->getDeltaTime();
     if (m_timeSinceLastUpdate < m_updateInterval) return;
     m_timeSinceLastUpdate = 0.0f;
     

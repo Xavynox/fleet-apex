@@ -35,13 +35,13 @@ public:
     bool isEnabled() const { return m_enabled; }
     
 private:
-    CCSprite* m_background = nullptr;
-    CCLabelTTF* m_titleLabel = nullptr;
-    CCLabelTTF* m_fpsLabel = nullptr;
-    CCLabelTTF* m_frameTimeLabel = nullptr;
-    CCLabelTTF* m_bottleneckLabel = nullptr;
-    CCLabelTTF* m_dataStatusLabel = nullptr;
-    CCSprite* m_logoSprite = nullptr;
+    cocos2d::CCSprite* m_background = nullptr;
+    cocos2d::CCLabelTTF* m_titleLabel = nullptr;
+    cocos2d::CCLabelTTF* m_fpsLabel = nullptr;
+    cocos2d::CCLabelTTF* m_frameTimeLabel = nullptr;
+    cocos2d::CCLabelTTF* m_bottleneckLabel = nullptr;
+    cocos2d::CCLabelTTF* m_dataStatusLabel = nullptr;
+    cocos2d::CCSprite* m_logoSprite = nullptr;
     
     FleetCore* m_core = nullptr;
     bool m_enabled = false;
