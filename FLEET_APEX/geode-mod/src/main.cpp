@@ -1,16 +1,17 @@
 /**
  * FLEET APEX v0.3 - Geode Mod Entry Point
  * 
- * Diagnostic-Only First Release for Geometry Dash
+ * Configuration Testing Release for Geometry Dash
  * 
  * This is the main entry point for the FLEET APEX Geode mod.
  * It initializes the engine and provides the main loop.
  * 
- * Phase 1 v0.3: Diagnostic Mode
+ * Phase 1 v0.3: Configuration Test Mode
  * 
- * Note: In this diagnostic-only release, optimizations are DISABLED.
- * The engine measures performance but does not apply optimizations
- * to ensure zero gameplay changes while validating the architecture.
+ * Note: CPU Liberation, GPU Assist, and Automatic Optimization are ENABLED
+ * for controlled testing purposes. These optimizations should only be
+ * enabled in controlled testing environments, not in production gameplay.
+ * HUD remains disabled by default.
  */
 
 #include <Geode/DefaultInclude.hpp>
@@ -33,17 +34,17 @@ $on_mod(Loaded) {
     log::info("FLEET APEX v0.3 loading...");
     
     try {
-        // Initialize core with diagnostic defaults
+        // Initialize core with optimization testing defaults
         auto config = FleetCore::Config();
         config.enableProfiling = true;
         config.enableLevelAnalysis = true;
-        config.enableAutoOptimization = false;
+        config.enableAutoOptimization = true;
         
-        // v0.3 diagnostic mode: SAFETY FIRST
+        // v0.3 testing mode: SAFE mode with optimizations ENABLED for testing
         config.defaultMode = AdaptiveEngine::PerformanceMode::SAFE;
-        config.enableCPULiberation = false;  // OFF for diagnostic
-        config.enableGPUAssist = false;      // OFF for diagnostic
-        config.enableDebugLogging = false;
+        config.enableCPULiberation = true;   // ENABLED for testing
+        config.enableGPUAssist = true;       // ENABLED for testing
+        config.enableDebugLogging = true;    // ENABLED for diagnostic output
         
         g_core = std::make_unique<FleetCore>();
         g_core->setConfig(config);
