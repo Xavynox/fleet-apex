@@ -236,6 +236,48 @@ std::map<std::string, double> Profiler::getMetricsMap() const {
     return metrics;
 }
 
+void Profiler::recordFrameInterval(double frameTimeMs) {
+    if (!m_profilingEnabled) return;
+
+    // Reject invalid intervals
+    if (frameTimeMs <= 0.0 || frameTimeMs > 5000.0) return;
+
+    // Store interval in history and compute frame metrics
+    m_frameHistory.push_back(frameTimeMs);
+    if (m_frameHistory.size() > m_historySize) {
+        m_frameHistory.erase(m_frameHistory.begin());
+    }
+
+    auto& frame = m_snapshot.current;
+    frame.frameTimeMs = frameTimeMs;
+    frame.fps = (frameTimeMs > 0.0 && frameTimeMs < 5000.0) ? (1000.0 / frameTimeMs) : 0.0;
+
+    // First call: treat as initialization, do not mark valid data yet
+    if (m_frameHistory.size() == 1) {
+        m_hasFirstFrame = true;
+        return;
+    }
+
+    m_snapshot.hasValidData = true;
+    m_snapshot.frameSamples = m_frameHistory.size();
+
+    // Update rolling statistics from retained window
+    if (m_frameHistory.size() >= 2) {
+        auto sortedHistory = m_frameHistory;
+        std::sort(sortedHistory.begin(), sortedHistory.end());
+        frame.medianFrameTimeMs = sortedHistory[sortedHistory.size() / 2];
+        frame.worstFrameTimeMs = sortedHistory.back();
+
+        double sum = std::accumulate(m_frameHistory.begin(), m_frameHistory.end(), 0.0);
+        double mean = sum / m_frameHistory.size();
+        double variance = 0.0;
+        for (double v : m_frameHistory) {
+            variance += (v - mean) * (v - mean);
+        }
+        frame.frameTimeVariance = variance / m_frameHistory.size();
+    }
+}
+
 } // namespace fleetapex
 // v0.3 profiler fix: clarifyBottleneck returns BottleneckType, resolves undefined symbol
 // Rebuild trigger

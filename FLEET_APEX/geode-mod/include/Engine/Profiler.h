@@ -151,6 +151,13 @@ public:
     // --- GPU time: intentionally not settable without a validated timer ---
     void markGpuTimeUnavailable() { m_snapshot.current.gpuTimeValid = false; m_snapshot.current.gpuTimeMs = 0.0; }
 
+    // --- Externally measured frame-callback interval ---
+    /// Record an externally measured frame-callback interval (e.g. from a CCDirector::drawScene() hook).
+    /// The elapsed time is recorded directly as frameTimeMs, not as callback execution duration.
+    /// The first call is treated as initialization (stored but not flagged as valid data).
+    /// Invalid intervals (<=0 or >5000ms) are silently dropped.
+    void recordFrameInterval(double frameTimeMs);
+
     const PerformanceSnapshot& getSnapshot() const { return m_snapshot; }
     PerformanceSnapshot& getSnapshot() { return m_snapshot; }
     bool isProfilingEnabled() const { return m_profilingEnabled; }

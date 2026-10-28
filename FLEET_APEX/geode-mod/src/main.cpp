@@ -8,13 +8,16 @@
  * 
  * Phase 1 v0.3: Configuration Test Mode
  * 
- * Note: CPU Liberation, GPU Assist, and Automatic Optimization are ENABLED
- * for controlled testing purposes. These optimizations should only be
+ * Note: CPU Liberation, GPU Assist, and Automatic Optimization are DISABLED
+ * by default per v0.4 requirements. These optimizations should only be
  * enabled in controlled testing environments, not in production gameplay.
  * HUD remains disabled by default.
  */
 
 #include <Geode/DefaultInclude.hpp>
+
+#include <Geode/modify/CCDirector.hpp>
+#include <chrono>
 
 #include "FleetCore.h"
 #include "PerformanceHUD.h"
@@ -34,17 +37,18 @@ $on_mod(Loaded) {
     log::info("FLEET APEX v0.3 loading...");
     
     try {
-        // Initialize core with optimization testing defaults
+        // Initialize core with v0.4 diagnostic defaults
+        // All optimizations remain disabled by default per v0.4 requirements
         auto config = FleetCore::Config();
         config.enableProfiling = true;
         config.enableLevelAnalysis = true;
-        config.enableAutoOptimization = true;
+        config.enableAutoOptimization = false;  // DISABLED by default for v0.4
         
-        // v0.3 testing mode: SAFE mode with optimizations ENABLED for testing
+        // v0.4 diagnostic mode: SAFE mode, all optimizations OFF
         config.defaultMode = AdaptiveEngine::PerformanceMode::SAFE;
-        config.enableCPULiberation = true;   // ENABLED for testing
-        config.enableGPUAssist = true;       // ENABLED for testing
-        config.enableDebugLogging = true;    // ENABLED for diagnostic output
+        config.enableCPULiberation = false;   // DISABLED by default
+        config.enableGPUAssist = false;       // DISABLED by default
+        config.enableDebugLogging = false;    // Diagnostic output only when needed
         
         g_core = std::make_unique<FleetCore>();
         g_core->setConfig(config);
@@ -86,20 +90,76 @@ $on_mod(Loaded) {
 // g_core and g_hud unique_ptr destructors handle cleanup automatically
 // when the mod is unloaded by Geode
 
-// Frame timing hooks - using Geode's hooking system
-class FrameHooks {
-public:
-    FrameHooks() {
-        // These hooks would be implemented based on actual GD version
-        // At this diagnostic stage, we're just setting up the structure
+// Frame timing hooks - using Geode's $modify hooking system
+// Hook: CCDirector::drawScene() - called every frame by Cocos2d-x
+// See: https://docs.geode-sdk.org/classes/cocos2d/CCDirector/
+// See: https://docs.geode-sdk.org/tutorials/modify/
+
+// Frame-timing state (static, lives for mod lifetime)
+namespace {
+    bool s_frameHookRegistered = false;
+    std::chrono::steady_clock::time_point s_lastFrameTime;
+    bool s_hasFirstFrame = false;
+}
+
+// Hook CCDirector::drawScene() to record per-frame callback intervals
+$modify(CCDirector) {
+    // Hook drawScene() - called every frame by Cocos2d-x
+    // This is a per-frame callback; we record timestamps and compute intervals
+    // without measuring the hook's own execution duration as frame time.
+    void drawScene() {
+        // Record monotonic timestamp at entry
+        auto now = std::chrono::steady_clock::now();
+
+        // If we have a previous frame, compute interval
+        if (s_hasFirstFrame) {
+            auto interval = std::chrono::duration<double, std::milli>(now - s_lastFrameTime).count();
+
+            // Record externally measured frame-callback interval via dedicated API
+            // This is NOT beginFrame()/endFrame() - it records frame interval, not callback duration
+            if (g_core && g_core->isReady() && g_core->getConfig().enableProfiling) {
+                g_core->getProfiler().recordFrameInterval(interval);
+            }
+        }
+
+        // Update timestamp for next frame
+        s_lastFrameTime = now;
+        s_hasFirstFrame = true;
+
+        // Invoke original method exactly once per intercepted call
+        // This preserves original behavior and prevents infinite recursion
+        CCDirector::drawScene();
     }
 };
 
+// FrameHooks registration helper - kept for compatibility with existing code
+class FrameHooks {
+public:
+    FrameHooks() {
+        m_frameCallbackRegistered = false;
+    }
+
+    void registerFrameCallback() {
+        if (m_frameCallbackRegistered) return;
+        s_frameHookRegistered = true;
+        m_frameCallbackRegistered = true;
+    }
+
+    void unregisterFrameCallback() {
+        m_frameCallbackRegistered = false;
+        s_frameHookRegistered = false;
+    }
+
+private:
+    bool m_frameCallbackRegistered = false;
+};
+
 // For actual Gameplay Dash integration, the following would be implemented:
-// - Hook into gd::GameScene::create() for level load
-// - Hook into object creation functions
-// - Hook into frame timing functions
-// 
+// - Hook into object creation functions (requires verified GD object hooks)
+// - Hook into frame timing functions (requires verified Geode hook for GD's main loop)
+//
 // The C++ implementation provides the full diagnostic framework.
 // Actual hooks require reverse engineering / SDK discovery and
 // will be implemented when the Geode SDK is properly available.
+//
+// FrameHooks instance instantiated during mod load.
