@@ -114,7 +114,7 @@ jobs:
   build-ios:
     name: Build iOS
     runs-on: macos-latest
-    if: github.event.inputs.target == 'iOS' || github.event.inputs.target == 'AllSupported'
+    if: github.event.inputs.target == 'iOS'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -187,32 +187,27 @@ jobs:
             platform="${pair%%:*}"
             result="${pair##*:}"
             if is_requested "$platform"; then
-              if [ "$result" != "success" ]; then
-                if [ "$result" = "skipped" ]; then incomplete="true"; else overall="FAILED"; fi
-              fi
-            else
-              if [ "$result" = "success" ] || [ "$result" = "failure" ]; then
-                overall="PARTIAL"
-              fi
+            if [ "$result" != "success" ]; then
+              if [ "$result" = "skipped" ]; then incomplete="true"; else overall="FAILED"; fi
             fi
-          done
-
-          if [ "$overall" = "SUCCESS" ] && [ "$incomplete" = "true" ]; then
-            overall="INCOMPLETE"
+          else
+            if [ "$result" = "success" ] || [ "$result" = "failure" ]; then
+              overall="PARTIAL"
+            fi
           fi
-          if [ "$overall" = "SUCCESS" ]; then
-            :
-          elif [ "$overall" = "FAILED" ]; then
-            :
-          fi
+        done
 
-          artifacts=""
-          [ "$ANDROID64_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android64"$'\n'
-          [ "$ANDROID32_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android32"$'\n'
-          [ "$WINDOWS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-win64"$'\n'
-          [ "$MACOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-macos"$'\n'
-          [ "$IOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-ios"$'\n'
-          [ -z "$artifacts" ] && artifacts="none"
+        if [ "$overall" = "SUCCESS" ] && [ "$incomplete" = "true" ]; then
+          overall="INCOMPLETE"
+        fi
+
+        artifacts=""
+        [ "$ANDROID64_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android64"$'\n'
+        [ "$ANDROID32_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android32"$'\n'
+        [ "$WINDOWS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-win64"$'\n'
+        [ "$MACOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-macos"$'\n'
+        [ "$IOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-ios"$'\n'
+        [ -z "$artifacts" ] && artifacts="none"
 
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
