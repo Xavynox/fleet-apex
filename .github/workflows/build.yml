@@ -2,7 +2,7 @@ name: Build FLEET APEX Geode Mod
 
 on:
   push:
-    branches: [main, master, build/v0.4-phase1-frame-timing]
+    branches: ['main', 'master', 'build/v0.4-phase1-frame-timing']
   workflow_dispatch:
     inputs:
       target:
