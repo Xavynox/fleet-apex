@@ -103,7 +103,7 @@ namespace {
 }
 
 // Hook CCDirector::drawScene() to record per-frame callback intervals
-$modify(CCDirector) {
+class $modify(CCDirector) {
     // Hook drawScene() - called every frame by Cocos2d-x
     // This is a per-frame callback; we record timestamps and compute intervals
     // without measuring the hook's own execution duration as frame time.
