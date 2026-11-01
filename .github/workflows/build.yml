@@ -89,7 +89,7 @@ jobs:
           retention-days: 30
 
   build-macos:
-    name: Build macOS (x64)
+    name: Build macOS
     runs-on: macos-latest
     if: github.event.inputs.target == 'MacOS' || github.event.inputs.target == 'AllSupported'
     steps:
@@ -187,27 +187,27 @@ jobs:
             platform="${pair%%:*}"
             result="${pair##*:}"
             if is_requested "$platform"; then
-            if [ "$result" != "success" ]; then
-              if [ "$result" = "skipped" ]; then incomplete="true"; else overall="FAILED"; fi
+              if [ "$result" != "success" ]; then
+                if [ "$result" = "skipped" ]; then incomplete="true"; else overall="FAILED"; fi
+              fi
+            else
+              if [ "$result" = "success" ] || [ "$result" = "failure" ]; then
+                overall="PARTIAL"
+              fi
             fi
-          else
-            if [ "$result" = "success" ] || [ "$result" = "failure" ]; then
-              overall="PARTIAL"
-            fi
+          done
+
+          if [ "$overall" = "SUCCESS" ] && [ "$incomplete" = "true" ]; then
+            overall="INCOMPLETE"
           fi
-        done
 
-        if [ "$overall" = "SUCCESS" ] && [ "$incomplete" = "true" ]; then
-          overall="INCOMPLETE"
-        fi
-
-        artifacts=""
-        [ "$ANDROID64_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android64"$'\n'
-        [ "$ANDROID32_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android32"$'\n'
-        [ "$WINDOWS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-win64"$'\n'
-        [ "$MACOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-macos"$'\n'
-        [ "$IOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-ios"$'\n'
-        [ -z "$artifacts" ] && artifacts="none"
+          artifacts=""
+          [ "$ANDROID64_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android64"$'\n'
+          [ "$ANDROID32_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android32"$'\n'
+          [ "$WINDOWS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-win64"$'\n'
+          [ "$MACOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-macos"$'\n'
+          [ "$IOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-ios"$'\n'
+          [ -z "$artifacts" ] && artifacts="none"
 
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
