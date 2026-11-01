@@ -211,17 +211,7 @@ jobs:
 
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-          message="FLEET APEX CI: ${overall}
-          Commit: ${{ github.sha }}
-          Branch: ${{ github.ref_name }}
-          Android64: ${ANDROID64_RESULT}
-          Android32: ${ANDROID32_RESULT}
-          Win64: ${WINDOWS_RESULT}
-          MacOS: ${MACOS_RESULT}
-          iOS: ${IOS_RESULT}
-          Artifacts:
-          ${artifacts}
-          Run: ${run_url}"
+          message="FLEET APEX CI: ${overall}"$'\n'"Commit: ${{ github.sha }}"$'\n'"Branch: ${{ github.ref_name }}"$'\n'"Android64: ${ANDROID64_RESULT}"$'\n'"Android32: ${ANDROID32_RESULT}"$'\n'"Win64: ${WINDOWS_RESULT}"$'\n'"MacOS: ${MACOS_RESULT}"$'\n'"iOS: ${IOS_RESULT}"$'\n'"Artifacts:"$'\n'"${artifacts}"$'\n'"Run: ${run_url}"
 
           response=$(curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
