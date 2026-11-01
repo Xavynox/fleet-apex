@@ -8,19 +8,21 @@ on:
       target:
         description: 'Target platform'
         required: true
-        default: 'Android64'
+        default: 'AllSupported'
         type: choice
         options:
+          - AllSupported
           - Android64
-          - Windows64
-          - Linux64
-          - macOS64
+          - Android32
+          - Win64
+          - MacOS
+          - iOS
 
 jobs:
-  build-android:
+  build-android64:
     name: Build Android (arm64)
     runs-on: ubuntu-latest
-    if: github.event.inputs.target == 'Android64' || github.event_name == 'push'
+    if: github.event.inputs.target == 'Android64' || github.event.inputs.target == 'AllSupported' || github.event_name == 'push'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,14 +38,37 @@ jobs:
         if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
-          name: fleet-apex-v0.2-android-arm64
-          path: ${{ steps.build_mod.outputs.build-output }}
+          name: fleet-apex-v0.4-android64
+          path: ${{ steps.build_mod.outputs.build-output }}/*.geode
+          retention-days: 30
+
+  build-android32:
+    name: Build Android (arm32)
+    runs-on: ubuntu-latest
+    if: github.event.inputs.target == 'Android32' || github.event.inputs.target == 'AllSupported'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (Android arm32)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: ./FLEET_APEX/geode-mod
+          target: Android32
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.build-output != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.4-android32
+          path: ${{ steps.build_mod.outputs.build-output }}/*.geode
           retention-days: 30
 
   build-windows:
     name: Build Windows (x64)
     runs-on: windows-latest
-    if: github.event.inputs.target == 'Windows64'
+    if: github.event.inputs.target == 'Win64' || github.event.inputs.target == 'AllSupported'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,66 +78,66 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           path: ./FLEET_APEX/geode-mod
-          target: Windows64
+          target: Win64
 
       - name: Upload Geode mod artifact
         if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
-          name: fleet-apex-v0.2-windows-x64
-          path: ${{ steps.build_mod.outputs.build-output }}
-          retention-days: 30
-
-  build-linux:
-    name: Build Linux (x64)
-    runs-on: ubuntu-latest
-    if: github.event.inputs.target == 'Linux64'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build FLEET APEX Geode Mod (Linux x64)
-        id: build_mod
-        uses: geode-sdk/build-geode-mod@main
-        with:
-          path: ./FLEET_APEX/geode-mod
-          target: Linux64
-
-      - name: Upload Geode mod artifact
-        if: steps.build_mod.outputs.build-output != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: fleet-apex-v0.2-linux-x64
-          path: ${{ steps.build_mod.outputs.build-output }}
+          name: fleet-apex-v0.4-win64
+          path: ${{ steps.build_mod.outputs.build-output }}/*.geode
           retention-days: 30
 
   build-macos:
     name: Build macOS (x64)
     runs-on: macos-latest
-    if: github.event.inputs.target == 'macOS64'
+    if: github.event.inputs.target == 'MacOS' || github.event.inputs.target == 'AllSupported'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build FLEET APEX Geode Mod (macOS x64)
+      - name: Build FLEET APEX Geode Mod (macOS)
         id: build_mod
         uses: geode-sdk/build-geode-mod@main
         with:
           path: ./FLEET_APEX/geode-mod
-          target: macOS64
+          target: MacOS
 
       - name: Upload Geode mod artifact
         if: steps.build_mod.outputs.build-output != ''
         uses: actions/upload-artifact@v4
         with:
-          name: fleet-apex-v0.2-macos-x64
-          path: ${{ steps.build_mod.outputs.build-output }}
+          name: fleet-apex-v0.4-macos
+          path: ${{ steps.build_mod.outputs.build-output }}/*.geode
+          retention-days: 30
+
+  build-ios:
+    name: Build iOS
+    runs-on: macos-latest
+    if: github.event.inputs.target == 'iOS' || github.event.inputs.target == 'AllSupported'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build FLEET APEX Geode Mod (iOS)
+        id: build_mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: ./FLEET_APEX/geode-mod
+          target: iOS
+
+      - name: Upload Geode mod artifact
+        if: steps.build_mod.outputs.build-output != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-apex-v0.4-ios
+          path: ${{ steps.build_mod.outputs.build-output }}/*.geode
           retention-days: 30
 
   notify-telegram:
     name: Notify Telegram
     runs-on: ubuntu-latest
-    needs: [build-android, build-windows, build-linux, build-macos]
+    needs: [build-android64, build-android32, build-windows, build-macos, build-ios]
     if: always()
     steps:
       - name: Check Telegram secrets
@@ -138,24 +163,55 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ANDROID_RESULT: ${{ needs.build-android.result }}
+          ANDROID64_RESULT: ${{ needs.build-android64.result }}
+          ANDROID32_RESULT: ${{ needs.build-android32.result }}
           WINDOWS_RESULT: ${{ needs.build-windows.result }}
-          LINUX_RESULT: ${{ needs.build-linux.result }}
           MACOS_RESULT: ${{ needs.build-macos.result }}
+          IOS_RESULT: ${{ needs.build-ios.result }}
         run: |
           set +e
+          requested="${{ github.event.inputs.target }}"
+          if [ -z "$requested" ]; then requested="push"; fi
+
+          is_requested() {
+            case "$requested" in
+              AllSupported|push) return 0 ;;
+              "$1") return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
           overall="SUCCESS"
-          for r in "$ANDROID_RESULT" "$WINDOWS_RESULT" "$LINUX_RESULT" "$MACOS_RESULT"; do
-            if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then
-              overall="FAILED"
+          incomplete="false"
+          for pair in "Android64:$ANDROID64_RESULT" "Android32:$ANDROID32_RESULT" "Win64:$WINDOWS_RESULT" "MacOS:$MACOS_RESULT" "iOS:$IOS_RESULT"; do
+            platform="${pair%%:*}"
+            result="${pair##*:}"
+            if is_requested "$platform"; then
+              if [ "$result" != "success" ]; then
+                if [ "$result" = "skipped" ]; then incomplete="true"; else overall="FAILED"; fi
+              fi
+            else
+              if [ "$result" = "success" ] || [ "$result" = "failure" ]; then
+                overall="PARTIAL"
+              fi
             fi
           done
 
+          if [ "$overall" = "SUCCESS" ] && [ "$incomplete" = "true" ]; then
+            overall="INCOMPLETE"
+          fi
+          if [ "$overall" = "SUCCESS" ]; then
+            :
+          elif [ "$overall" = "FAILED" ]; then
+            :
+          fi
+
           artifacts=""
-          [ "$ANDROID_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.2-android-arm64"$'\n'
-          [ "$WINDOWS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.2-windows-x64"$'\n'
-          [ "$LINUX_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.2-linux-x64"$'\n'
-          [ "$MACOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.2-macos-x64"$'\n'
+          [ "$ANDROID64_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android64"$'\n'
+          [ "$ANDROID32_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-android32"$'\n'
+          [ "$WINDOWS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-win64"$'\n'
+          [ "$MACOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-macos"$'\n'
+          [ "$IOS_RESULT" = "success" ] && artifacts="${artifacts}- fleet-apex-v0.4-ios"$'\n'
           [ -z "$artifacts" ] && artifacts="none"
 
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -163,10 +219,11 @@ jobs:
           message="FLEET APEX CI: ${overall}
           Commit: ${{ github.sha }}
           Branch: ${{ github.ref_name }}
-          Android: ${ANDROID_RESULT}
-          Windows: ${WINDOWS_RESULT}
-          Linux: ${LINUX_RESULT}
-          macOS: ${MACOS_RESULT}
+          Android64: ${ANDROID64_RESULT}
+          Android32: ${ANDROID32_RESULT}
+          Win64: ${WINDOWS_RESULT}
+          MacOS: ${MACOS_RESULT}
+          iOS: ${IOS_RESULT}
           Artifacts:
           ${artifacts}
           Run: ${run_url}"
