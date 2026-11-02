@@ -45,7 +45,7 @@ jobs:
   build-android32:
     name: Build Android (arm32)
     runs-on: ubuntu-latest
-    if: github.event.inputs.target == 'Android32' || github.event.inputs.target == 'AllSupported'
+    if: github.event.inputs.target == 'Android32' || github.event.inputs.target == 'AllSupported' || github.event_name == 'push'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
   build-windows:
     name: Build Windows (x64)
     runs-on: windows-latest
-    if: github.event.inputs.target == 'Win64' || github.event.inputs.target == 'AllSupported'
+    if: github.event.inputs.target == 'Win64' || github.event.inputs.target == 'AllSupported' || github.event_name == 'push'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -91,7 +91,7 @@ jobs:
   build-macos:
     name: Build macOS
     runs-on: macos-latest
-    if: github.event.inputs.target == 'MacOS' || github.event.inputs.target == 'AllSupported'
+    if: github.event.inputs.target == 'MacOS' || github.event.inputs.target == 'AllSupported' || github.event_name == 'push'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -175,7 +175,12 @@ jobs:
 
           is_requested() {
             case "$requested" in
-              AllSupported|push) return 0 ;;
+              AllSupported|push)
+                case "$1" in
+                  iOS) return 1 ;;
+                  *) return 0 ;;
+                esac
+                ;;
               "$1") return 0 ;;
               *) return 1 ;;
             esac
