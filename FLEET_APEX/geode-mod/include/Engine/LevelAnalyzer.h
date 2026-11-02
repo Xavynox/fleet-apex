@@ -1,6 +1,7 @@
 #ifndef FLEET_APEX_LEVEL_ANALYZER_H
 #define FLEET_APEX_LEVEL_ANALYZER_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
