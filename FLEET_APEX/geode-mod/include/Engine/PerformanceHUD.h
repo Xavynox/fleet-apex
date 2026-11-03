@@ -26,6 +26,8 @@ public:
     void show();
     void hide();
     bool isVisible() const;
+    void onEnter() override;
+    void onExit() override;
     
     // Set reference to core for metrics
     void bindCore(FleetCore* core);
