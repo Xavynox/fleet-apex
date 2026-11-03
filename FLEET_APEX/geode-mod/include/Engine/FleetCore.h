@@ -24,7 +24,7 @@ public:
         NOT_INITIALIZED,
         INITIALIZING,
         READY,
-        ERROR
+        FAILED
     };
 
     enum class Platform {

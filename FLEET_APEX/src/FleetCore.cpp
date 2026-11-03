@@ -28,19 +28,19 @@ bool FleetCore::initialize() {
     
     // Initialize subsystems
     if (!initializeProfiler()) {
-        m_status = InitStatus::ERROR;
+        m_status = InitStatus::FAILED;
         if (m_onError) m_onError("Failed to initialize profiler");
         return false;
     }
     
     if (!initializeAnalyzer()) {
-        m_status = InitStatus::ERROR;
+        m_status = InitStatus::FAILED;
         if (m_onError) m_onError("Failed to initialize analyzer");
         return false;
     }
     
     if (!initializeAdaptiveEngine()) {
-        m_status = InitStatus::ERROR;
+        m_status = InitStatus::FAILED;
         if (m_onError) m_onError("Failed to initialize adaptive engine");
         return false;
     }
@@ -182,7 +182,7 @@ std::string FleetCore::getStatusString() const {
         case InitStatus::NOT_INITIALIZED: return "Not Initialized";
         case InitStatus::INITIALIZING: return "Initializing";
         case InitStatus::READY: return "Ready";
-        case InitStatus::ERROR: return "Error";
+        case InitStatus::FAILED: return "Error";
         default: return "Unknown";
     }
 }
