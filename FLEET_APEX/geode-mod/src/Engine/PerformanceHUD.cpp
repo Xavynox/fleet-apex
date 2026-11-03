@@ -33,6 +33,8 @@ bool PerformanceHUD::initialize() {
 void PerformanceHUD::destroy() {
     if (!m_initialized) return;
     
+    unscheduleUpdates();
+    
     // Remove all nodes from parent safely
     cocos2d::CCNode* nodes[] = {
         m_background,
@@ -69,6 +71,9 @@ void PerformanceHUD::setEnabled(bool enabled) {
     m_enabled = enabled;
     if (!enabled) {
         hide();
+        unscheduleUpdates();
+    } else {
+        scheduleUpdates();
     }
 }
 
@@ -179,11 +184,16 @@ void PerformanceHUD::buildUI() {
     }
 }
 
-void PerformanceHUD::update() {
+void PerformanceHUD::update(float dt) {
     if (!m_initialized || !m_enabled || !m_core) return;
 
+    // If HUD nodes are not attached to a scene, try to rebuild UI
+    if (m_background && !m_background->getParent()) {
+        buildUI();
+    }
+
     // Throttle UI refresh to avoid per-frame overhead
-    m_timeSinceLastUpdate += cocos2d::CCDirector::sharedDirector()->getDeltaTime();
+    m_timeSinceLastUpdate += dt;
     if (m_timeSinceLastUpdate < m_updateInterval) return;
     m_timeSinceLastUpdate = 0.0f;
 
@@ -196,15 +206,15 @@ void PerformanceHUD::scheduleUpdates() {
     if (!director) return;
     auto* scheduler = director->getScheduler();
     if (!scheduler) return;
-    // Schedule HUD update at 0.5s interval using a member-function target
+    
+    // Schedule using proper Cocos2d-x selector
     scheduler->schedule(
-        [this](float dt) { this->update(); },
-        nullptr,
-        m_updateInterval,
-        kCCRepeatForever,
-        0.0f,
-        false,
-        "FLEET_APEX_HUD_UPDATE"
+        schedule_selector(PerformanceHUD::update), 
+        this, 
+        m_updateInterval, 
+        kCCRepeatForever, 
+        0.0f, 
+        false
     );
     log::info("FLEET APEX HUD: update loop scheduled");
 }
@@ -215,7 +225,7 @@ void PerformanceHUD::unscheduleUpdates() {
     if (!director) return;
     auto* scheduler = director->getScheduler();
     if (!scheduler) return;
-    scheduler->unscheduleAllTargets(this);
+    scheduler->unscheduleAllForTarget(this);
 }
 
 void PerformanceHUD::refreshMetrics() {

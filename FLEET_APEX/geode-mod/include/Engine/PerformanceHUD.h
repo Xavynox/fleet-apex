@@ -22,7 +22,7 @@ public:
     
     bool initialize();
     void destroy();
-    void update();
+    void update(float dt);
     void show();
     void hide();
     bool isVisible() const;
