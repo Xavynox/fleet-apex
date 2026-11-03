@@ -15,10 +15,10 @@
 
 namespace fleetapex {
 
-class PerformanceHUD {
+class PerformanceHUD : public cocos2d::CCObject {
 public:
     PerformanceHUD();
-    ~PerformanceHUD();
+    virtual ~PerformanceHUD();
     
     bool initialize();
     void destroy();

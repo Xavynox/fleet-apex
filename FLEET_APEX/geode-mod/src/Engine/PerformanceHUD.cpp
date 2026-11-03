@@ -16,6 +16,15 @@ PerformanceHUD::~PerformanceHUD() {
     destroy();
 }
 
+void PerformanceHUD::onEnter() {
+    CCObject::onEnter();
+}
+
+void PerformanceHUD::onExit() {
+    unscheduleUpdates();
+    CCObject::onExit();
+}
+
 bool PerformanceHUD::initialize() {
     if (m_initialized) return true;
     
