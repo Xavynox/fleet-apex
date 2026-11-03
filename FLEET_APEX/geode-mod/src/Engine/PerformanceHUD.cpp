@@ -181,13 +181,41 @@ void PerformanceHUD::buildUI() {
 
 void PerformanceHUD::update() {
     if (!m_initialized || !m_enabled || !m_core) return;
-    
+
     // Throttle UI refresh to avoid per-frame overhead
     m_timeSinceLastUpdate += cocos2d::CCDirector::sharedDirector()->getDeltaTime();
     if (m_timeSinceLastUpdate < m_updateInterval) return;
     m_timeSinceLastUpdate = 0.0f;
-    
+
     refreshMetrics();
+}
+
+void PerformanceHUD::scheduleUpdates() {
+    if (!m_initialized) return;
+    auto* director = cocos2d::CCDirector::sharedDirector();
+    if (!director) return;
+    auto* scheduler = director->getScheduler();
+    if (!scheduler) return;
+    // Schedule HUD update at 0.5s interval using a member-function target
+    scheduler->schedule(
+        [this](float dt) { this->update(); },
+        nullptr,
+        m_updateInterval,
+        kCCRepeatForever,
+        0.0f,
+        false,
+        "FLEET_APEX_HUD_UPDATE"
+    );
+    log::info("FLEET APEX HUD: update loop scheduled");
+}
+
+void PerformanceHUD::unscheduleUpdates() {
+    if (!m_initialized) return;
+    auto* director = cocos2d::CCDirector::sharedDirector();
+    if (!director) return;
+    auto* scheduler = director->getScheduler();
+    if (!scheduler) return;
+    scheduler->unscheduleAllTargets(this);
 }
 
 void PerformanceHUD::refreshMetrics() {

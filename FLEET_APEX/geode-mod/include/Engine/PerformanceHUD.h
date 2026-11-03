@@ -53,6 +53,8 @@ private:
     void buildUI();
     void refreshMetrics();
     void clearMetrics();
+    void scheduleUpdates();
+    void unscheduleUpdates();
 };
 
 } // namespace fleetapex

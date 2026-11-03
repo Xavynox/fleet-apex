@@ -242,7 +242,7 @@ void Profiler::recordFrameInterval(double frameTimeMs) {
     // Reject invalid intervals
     if (frameTimeMs <= 0.0 || frameTimeMs > 5000.0) return;
 
-    // Store interval in history and compute frame metrics
+    // Store interval in history
     m_frameHistory.push_back(frameTimeMs);
     if (m_frameHistory.size() > m_historySize) {
         m_frameHistory.erase(m_frameHistory.begin());
@@ -265,16 +265,30 @@ void Profiler::recordFrameInterval(double frameTimeMs) {
     if (m_frameHistory.size() >= 2) {
         auto sortedHistory = m_frameHistory;
         std::sort(sortedHistory.begin(), sortedHistory.end());
+
         frame.medianFrameTimeMs = sortedHistory[sortedHistory.size() / 2];
         frame.worstFrameTimeMs = sortedHistory.back();
 
         double sum = std::accumulate(m_frameHistory.begin(), m_frameHistory.end(), 0.0);
         double mean = sum / m_frameHistory.size();
+        frame.averageFrameTimeMs = mean;
+
         double variance = 0.0;
         for (double v : m_frameHistory) {
             variance += (v - mean) * (v - mean);
         }
         frame.frameTimeVariance = variance / m_frameHistory.size();
+
+        // P99: value at 99th percentile of sorted history
+        size_t p99Idx = static_cast<size_t>(sortedHistory.size() * 0.99);
+        if (p99Idx >= sortedHistory.size()) p99Idx = sortedHistory.size() - 1;
+        frame.p99FrameTimeMs = sortedHistory[p99Idx];
+
+        // Spike count: frames exceeding threshold
+        frame.spikeCount = 0;
+        for (double v : m_frameHistory) {
+            if (v > m_spikeThresholdMs) frame.spikeCount++;
+        }
     }
 }
 

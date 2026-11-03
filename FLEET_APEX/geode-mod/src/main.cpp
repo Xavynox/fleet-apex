@@ -77,8 +77,9 @@ $on_mod(Loaded) {
             log::warn("FLEET APEX HUD failed to initialize");
             g_hud.reset();
         } else {
-            g_hud->setEnabled(false);  // HUD disabled by default
-            log::info("FLEET APEX HUD created (disabled by default)");
+            g_hud->setEnabled(config.enablePerformanceHUD);  // disabled by default
+            g_hud->scheduleUpdates();
+            log::info("FLEET APEX HUD created (enabled={})", config.enablePerformanceHUD);
         }
         
     } catch (const std::exception& e) {
@@ -100,6 +101,7 @@ namespace {
     bool s_frameHookRegistered = false;
     std::chrono::steady_clock::time_point s_lastFrameTime;
     bool s_hasFirstFrame = false;
+    long long s_lastLogMs = 0;
 }
 
 // Hook CCDirector::drawScene() to record per-frame callback intervals
@@ -119,6 +121,17 @@ class $modify(CCDirector) {
             // This is NOT beginFrame()/endFrame() - it records frame interval, not callback duration
             if (g_core && g_core->isReady() && g_core->getConfig().enableProfiling) {
                 g_core->getProfiler().recordFrameInterval(interval);
+            }
+
+            // Rate-limited diagnostic logging (at most once per second)
+            if (g_core && g_core->getConfig().enableDebugLogging) {
+                auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+                if (nowMs - s_lastLogMs >= 1000) {
+                    s_lastLogMs = nowMs;
+                    auto& snap = g_core->getProfiler().getSnapshot();
+                    log::info("FLEET APEX: FPS={:.1f} frame={:.2f}ms samples={} valid={}",
+                        snap.current.fps, snap.current.frameTimeMs, snap.frameSamples, snap.hasValidData);
+                }
             }
         }
 
