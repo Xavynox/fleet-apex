@@ -23,20 +23,13 @@ void PerformanceHUD::scheduleUpdates() {
     auto* scheduler = director->getScheduler();
     if (!scheduler) return;
     
-    // Create a CCNode as the update target
-    if (!m_updateNode) {
-        m_updateNode = cocos2d::CCNode::create();
-        m_updateNode->retain();
-    }
-    
-    // Schedule using proper Cocos2d-x selector on the node
+    // Use Geode's scheduler API - simpler approach
     scheduler->schedule(
-        schedule_selector(PerformanceHUD::update), 
-        m_updateNode, 
-        m_updateInterval, 
-        kCCRepeatForever, 
-        0.0f, 
-        false
+        [this](float dt) { this->update(dt); },
+        this,
+        m_updateInterval,
+        false,
+        "FLEET_APEX_HUD_UPDATE"
     );
     log::info("FLEET APEX HUD: update loop scheduled");
 }
@@ -48,9 +41,7 @@ void PerformanceHUD::unscheduleUpdates() {
     auto* scheduler = director->getScheduler();
     if (!scheduler) return;
     
-    if (m_updateNode) {
-        scheduler->unscheduleAllForTarget(m_updateNode);
-    }
+    scheduler->unschedule("FLEET_APEX_HUD_UPDATE", this);
 }
 
 bool PerformanceHUD::initialize() {

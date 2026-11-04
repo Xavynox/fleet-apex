@@ -43,8 +43,6 @@ private:
     cocos2d::CCLabelTTF* m_dataStatusLabel = nullptr;
     cocos2d::CCSprite* m_logoSprite = nullptr;
     
-    cocos2d::CCNode* m_updateNode = nullptr;
-    
     FleetCore* m_core = nullptr;
     bool m_enabled = false;
     bool m_initialized = false;
