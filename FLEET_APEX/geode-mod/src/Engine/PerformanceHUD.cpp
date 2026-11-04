@@ -23,25 +23,14 @@ void PerformanceHUD::scheduleUpdates() {
     auto* scheduler = director->getScheduler();
     if (!scheduler) return;
     
-    // Use Geode's scheduler API - simpler approach
-    scheduler->schedule(
-        [this](float dt) { this->update(dt); },
-        this,
-        m_updateInterval,
-        false,
-        "FLEET_APEX_HUD_UPDATE"
-    );
-    log::info("FLEET APEX HUD: update loop scheduled");
+    // Use a simple selector approach - try to schedule update on the HUD itself
+    // Note: This requires PerformanceHUD to be a CCNode, which it isn't.
+    // For now, we'll use a simple timer-based approach in update() called from drawScene hook.
+    log::info("FLEET APEX HUD: scheduled updates not available in this Geode SDK version");
 }
 
 void PerformanceHUD::unscheduleUpdates() {
-    if (!m_initialized) return;
-    auto* director = cocos2d::CCDirector::sharedDirector();
-    if (!director) return;
-    auto* scheduler = director->getScheduler();
-    if (!scheduler) return;
-    
-    scheduler->unschedule("FLEET_APEX_HUD_UPDATE", this);
+    // No-op for now
 }
 
 bool PerformanceHUD::initialize() {
