@@ -16,13 +16,41 @@ PerformanceHUD::~PerformanceHUD() {
     destroy();
 }
 
-void PerformanceHUD::onEnter() {
-    CCObject::onEnter();
+void PerformanceHUD::scheduleUpdates() {
+    if (!m_initialized) return;
+    auto* director = cocos2d::CCDirector::sharedDirector();
+    if (!director) return;
+    auto* scheduler = director->getScheduler();
+    if (!scheduler) return;
+    
+    // Create a CCNode as the update target
+    if (!m_updateNode) {
+        m_updateNode = cocos2d::CCNode::create();
+        m_updateNode->retain();
+    }
+    
+    // Schedule using proper Cocos2d-x selector on the node
+    scheduler->schedule(
+        schedule_selector(PerformanceHUD::update), 
+        m_updateNode, 
+        m_updateInterval, 
+        kCCRepeatForever, 
+        0.0f, 
+        false
+    );
+    log::info("FLEET APEX HUD: update loop scheduled");
 }
 
-void PerformanceHUD::onExit() {
-    unscheduleUpdates();
-    CCObject::onExit();
+void PerformanceHUD::unscheduleUpdates() {
+    if (!m_initialized) return;
+    auto* director = cocos2d::CCDirector::sharedDirector();
+    if (!director) return;
+    auto* scheduler = director->getScheduler();
+    if (!scheduler) return;
+    
+    if (m_updateNode) {
+        scheduler->unscheduleAllForTarget(m_updateNode);
+    }
 }
 
 bool PerformanceHUD::initialize() {
@@ -68,6 +96,11 @@ void PerformanceHUD::destroy() {
     m_bottleneckLabel = nullptr;
     m_dataStatusLabel = nullptr;
     m_logoSprite = nullptr;
+    
+    if (m_updateNode) {
+        m_updateNode->release();
+        m_updateNode = nullptr;
+    }
     
     m_initialized = false;
 }

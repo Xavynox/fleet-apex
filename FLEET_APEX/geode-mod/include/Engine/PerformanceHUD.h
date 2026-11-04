@@ -15,10 +15,10 @@
 
 namespace fleetapex {
 
-class PerformanceHUD : public cocos2d::CCObject {
+class PerformanceHUD {
 public:
     PerformanceHUD();
-    virtual ~PerformanceHUD();
+    ~PerformanceHUD();
     
     bool initialize();
     void destroy();
@@ -26,8 +26,6 @@ public:
     void show();
     void hide();
     bool isVisible() const;
-    void onEnter() override;
-    void onExit() override;
     
     // Set reference to core for metrics
     void bindCore(FleetCore* core);
@@ -44,6 +42,8 @@ private:
     cocos2d::CCLabelTTF* m_bottleneckLabel = nullptr;
     cocos2d::CCLabelTTF* m_dataStatusLabel = nullptr;
     cocos2d::CCSprite* m_logoSprite = nullptr;
+    
+    cocos2d::CCNode* m_updateNode = nullptr;
     
     FleetCore* m_core = nullptr;
     bool m_enabled = false;
