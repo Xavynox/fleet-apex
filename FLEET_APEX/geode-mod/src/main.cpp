@@ -139,6 +139,13 @@ class $modify(CCDirector) {
         s_lastFrameTime = now;
         s_hasFirstFrame = true;
 
+        // Update HUD if enabled (called from drawScene to avoid scheduler issues)
+        if (g_hud && g_hud->isEnabled()) {
+            // We need to pass a dt value - use the frame interval or a fixed value
+            // For now, use a fixed small dt since we're called every frame
+            g_hud->update(1.0f / 60.0f);
+        }
+
         // Invoke original method exactly once per intercepted call
         // This preserves original behavior and prevents infinite recursion
         CCDirector::drawScene();

@@ -23,10 +23,10 @@ void PerformanceHUD::scheduleUpdates() {
     auto* scheduler = director->getScheduler();
     if (!scheduler) return;
     
-    // Use a simple selector approach - try to schedule update on the HUD itself
-    // Note: This requires PerformanceHUD to be a CCNode, which it isn't.
-    // For now, we'll use a simple timer-based approach in update() called from drawScene hook.
-    log::info("FLEET APEX HUD: scheduled updates not available in this Geode SDK version");
+    // Use the geode scheduler approach - schedule a callback with the node
+    // Since we can't schedule on this (not a CCNode), we'll use a lambda approach
+    // Store the update interval and handle timing in the drawScene hook
+    log::info("FLEET APEX HUD: update scheduling not available in this Geode SDK version");
 }
 
 void PerformanceHUD::unscheduleUpdates() {
@@ -76,11 +76,6 @@ void PerformanceHUD::destroy() {
     m_bottleneckLabel = nullptr;
     m_dataStatusLabel = nullptr;
     m_logoSprite = nullptr;
-    
-    if (m_updateNode) {
-        m_updateNode->release();
-        m_updateNode = nullptr;
-    }
     
     m_initialized = false;
 }
@@ -222,33 +217,7 @@ void PerformanceHUD::update(float dt) {
     refreshMetrics();
 }
 
-void PerformanceHUD::scheduleUpdates() {
-    if (!m_initialized) return;
-    auto* director = cocos2d::CCDirector::sharedDirector();
-    if (!director) return;
-    auto* scheduler = director->getScheduler();
-    if (!scheduler) return;
-    
-    // Schedule using proper Cocos2d-x selector
-    scheduler->schedule(
-        schedule_selector(PerformanceHUD::update), 
-        this, 
-        m_updateInterval, 
-        kCCRepeatForever, 
-        0.0f, 
-        false
-    );
-    log::info("FLEET APEX HUD: update loop scheduled");
-}
 
-void PerformanceHUD::unscheduleUpdates() {
-    if (!m_initialized) return;
-    auto* director = cocos2d::CCDirector::sharedDirector();
-    if (!director) return;
-    auto* scheduler = director->getScheduler();
-    if (!scheduler) return;
-    scheduler->unscheduleAllForTarget(this);
-}
 
 void PerformanceHUD::refreshMetrics() {
     if (!m_core || !m_core->isReady()) {

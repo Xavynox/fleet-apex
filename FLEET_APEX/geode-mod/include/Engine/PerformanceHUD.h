@@ -34,6 +34,10 @@ public:
     void setEnabled(bool enabled);
     bool isEnabled() const { return m_enabled; }
     
+    // Update scheduling
+    void scheduleUpdates();
+    void unscheduleUpdates();
+
 private:
     cocos2d::CCSprite* m_background = nullptr;
     cocos2d::CCLabelTTF* m_titleLabel = nullptr;
